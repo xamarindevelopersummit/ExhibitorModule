@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mock|AnyCPU' ">
+    <DebugType></DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
+    <PackageReference Include="IntelliAbb.Xamarin.Controls" Version="1.0.148" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.6.929" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.6.929" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExhibitorModule.Models\ExhibitorModule.Models.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Common\ExhibitorModule.Common.csproj" />
+  </ItemGroup>
+</Project>

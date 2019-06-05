@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
+             xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
+             xmlns:i18n="clr-namespace:ExhibitorModule.i18n;assembly=ExhibitorModule" 
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:windows="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core" 
+             Title="{Binding Title}" 
+             x:Class="ExhibitorModule.Views.MainPage">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings" Command="{prism:NavigateTo SettingsPage}" Icon="settings"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mock|AnyCPU' ">
+    <DebugType></DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="CClarke.Plugin.Calendars" Version="1.0.0" />
+    <PackageReference Include="Fody" Version="4.1.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.258-beta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Event.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wpa81+wp8</AssetTargetFallback>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="4.1.0" PrivateAssets="all" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="all" />
+    <PackageReference Include="Prism.Unity.Forms" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Plugin.Popups" Version="2.2.0.293" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.6.929" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.6.929" />
+    <PackageReference Include="Mobile.BuildTools" Version="1.4.0.638" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.0.0.13" />
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="3.6.0.344457" />
+    <PackageReference Include="Plugin.Permissions" Version="4.0.4-beta" />
+    <PackageReference Include="IntelliAbb.Xamarin.Controls" Version="1.0.148" />
+    <PackageReference Include="CClarke.Plugin.Calendars" Version="1.0.0" />
+    <PackageReference Include="Plugin.FirebasePushNotification" Version="2.3.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModels\SplashScreenPageViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Strings\*.resx" Generator="ResXFileCodeGenerator" LastGenOutput="%(Filename).Designer.cs" />
+    <Compile Update="Strings\Resources.Designer.cs" DesignTime="true" AutoGen="true" DependentUpon="Resources.resx" />
+    <Compile Update="Views\EventDetail.xaml.cs">
+      <DependentUpon>EventDetailPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExhibitorModule.Models\ExhibitorModule.Models.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Services\ExhibitorModule.Services.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Controls\ExhibitorModule.Controls.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Common\ExhibitorModule.Common.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Data\ExhibitorModule.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Effects\" />
+    <Folder Include="Views\Settings\" />
+    <Folder Include="ViewModels\Settings\" />
+  </ItemGroup>
+</Project>

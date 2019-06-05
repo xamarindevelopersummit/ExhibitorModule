@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="nunit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\ExhibitorModule\ExhibitorModule.csproj" />
+    <ProjectReference Include="..\..\..\src\ExhibitorModule.Common\ExhibitorModule.Common.csproj" />
+    <ProjectReference Include="..\..\..\src\ExhibitorModule.Controls\ExhibitorModule.Controls.csproj" />
+    <ProjectReference Include="..\..\..\ExhibitorModule.Data\ExhibitorModule.Data.csproj" />
+    <ProjectReference Include="..\..\..\src\ExhibitorModule.Models\ExhibitorModule.Models.csproj" />
+    <ProjectReference Include="..\..\..\src\ExhibitorModule.Services\ExhibitorModule.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ModelTests\" />
+  </ItemGroup>
+</Project>

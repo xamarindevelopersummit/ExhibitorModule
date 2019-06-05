@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.6.929" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.0.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.2" />
+    <PackageReference Include="CClarke.Plugin.Calendars" Version="1.0.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
+    <PackageReference Include="Polly" Version="7.1.0" />
+    <PackageReference Include="modernhttpclient" Version="2.4.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Plugin.FirebasePushNotification" Version="2.3.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExhibitorModule.Models\ExhibitorModule.Models.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Common\ExhibitorModule.Common.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Data\ExhibitorModule.Data.csproj" />
+  </ItemGroup>
+</Project>

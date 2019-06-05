@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mock|AnyCPU' ">
+    <DebugType></DebugType>
+    <OutputPath>..\ExhibitorModule.Data\bin\Mock\netstandard2.0</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\ExhibitorModule.Data\bin\Release\netstandard2.0</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\ExhibitorModule.Data\bin\Debug\netstandard2.0</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.258-beta" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExhibitorModule.Models\ExhibitorModule.Models.csproj" />
+    <ProjectReference Include="..\ExhibitorModule.Common\ExhibitorModule.Common.csproj" />
+  </ItemGroup>
+</Project>

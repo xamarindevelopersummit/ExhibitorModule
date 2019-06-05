@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="ExhibitorModule.Views.CreditsPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding Software}" ItemSelected="Handle_ItemSelected" SelectedItem="{Binding SelectedSoftware}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding Item1}" Margin="12"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

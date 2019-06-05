@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" 
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" 
+                 xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core" 
+                 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                 xmlns:macOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.macOSSpecific;assembly=Xamarin.Forms.Core" 
+                 xmlns:windows="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core" 
+                 xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms" 
+                 xmlns:ioc="clr-namespace:Prism.Ioc;assembly=Prism.Forms"
+                 xmlns:controls="clr-namespace:ExhibitorModule.Controls;assembly=ExhibitorModule.Controls"
+                 x:Class="ExhibitorModule.Views.AboutPage"
+                 Title="{Binding Title}"
+                 Visual="Material">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="12">
+            <Image Source="AppIcon.png" WidthRequest="80" Aspect="AspectFit"/>
+            <Label Text="Xamarin Developer Summit" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+            <Label Text="July 11-12 | Houston TX" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+
+            <StackLayout Orientation="Horizontal">
+                <controls:XDSButton Text="Website" Command="{Binding GoToWebsiteCommand}" HorizontalOptions="FillAndExpand"/>
+                <controls:XDSButton Text="View Map" Command="{Binding ViewMapCommand}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            <Label Text="{Binding AppVersion}" HorizontalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource FeedItemDisc}"/>
+        </StackLayout>
+        
+        <Label Text="Software" Grid.Row="1" HorizontalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CreditsCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+        <Label Text="© intelliAbb 2019" HorizontalOptions="Center" Grid.Row="2"/>
+    </Grid>
+</ContentPage>

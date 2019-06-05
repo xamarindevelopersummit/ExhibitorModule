@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms" 
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                        xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms" 
+                        xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+                        xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core" 
+                        xmlns:windows="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core"
+                        x:Class="ExhibitorModule.App">
+    <prism:PrismApplication.Resources>
+        <!-- Application resource dictionary -->
+        <ResourceDictionary>
+            <!-- See https://material.io/color for more help choosing a Material Design Color scheme -->
+            <Color x:Key="Primary">#454CE1</Color> <!-- 009A43 #2DCC70-->
+            <Color x:Key="PrimaryDark">#3498D8</Color>
+            <Color x:Key="PrimaryDarkTranslucent">#FF9A43</Color>
+            <Color x:Key="Accent">#2BE189</Color>
+            <Color x:Key="PageBackgroundColor">#ffffff</Color><!--eafcf7-->
+            
+            <Color x:Key="LabelSectionText">#000000</Color>
+            <Color x:Key="DetailTextColor">#979797</Color>
+            
+            <Style TargetType="ContentPage" ApplyToDerivedTypes="true">
+                <Setter Property="BackgroundColor" Value="{StaticResource PageBackgroundColor}"/>
+            </Style>
+            
+            <Style TargetType="NavigationPage" ApplyToDerivedTypes="true">
+                <Setter Property="BarTextColor" Value="#ffffff" />
+                <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}" />
+            </Style>
+            <Style TargetType="TabbedPage" ApplyToDerivedTypes="true">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource PageBackgroundColor}" />
+            </Style>
+            <Style x:Key="FancyFontStyle" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontFamily">
+                    <OnPlatform x:TypeArguments="x:String" iOS="ReemKufi-Regular" Android="ReemKufi-Regular.ttf#ReemKufi-Regular"/>
+                </Setter>
+            </Style>
+            <Style x:Key="FeedItemTitle" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{StaticResource LabelSectionText}"/>
+            </Style>
+            <Style x:Key="SectionTitle" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style x:Key="SubTitle" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style x:Key="FeedItemDesc" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontSize" Value="Small"/>
+                <Setter Property="TextColor" Value="#000000"/>
+            </Style>
+            <Style x:Key="FeedItemDate" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextColor" Value="{StaticResource DetailTextColor}" />
+            </Style>
+            <Style x:Key="FeedItemDisc" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="TextColor" Value="{StaticResource DetailTextColor}" />
+            </Style>
+            <Style x:Key="LightTextStyle" TargetType="Label" ApplyToDerivedTypes="true">
+                <Setter Property="TextColor" Value="{StaticResource DetailTextColor}"/>
+            </Style>
+        </ResourceDictionary>
+    </prism:PrismApplication.Resources>
+</prism:PrismApplication>
