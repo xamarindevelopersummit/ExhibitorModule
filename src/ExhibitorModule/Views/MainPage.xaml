@@ -13,7 +13,7 @@
              x:Class="ExhibitorModule.Views.MainPage">
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" Icon="addperson"/>
+        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" Icon="search"/>
         <ToolbarItem Text="Settings" Command="{prism:NavigateTo SettingsPage}" Icon="settings"/>
     </ContentPage.ToolbarItems>
     
@@ -27,7 +27,11 @@
             BackgroundColor="{StaticResource Primary}" 
             Placeholder="{x:Static strings:Resources.SearchLeadsPlaceholder}"
             CancelButtonColor="White"/>
-        <ListView Grid.Row="1" ItemsSource="{Binding Leads}">
+        <ListView Grid.Row="1" 
+                  ItemsSource="{Binding Leads}" 
+                  IsPullToRefreshEnabled="true" 
+                  RefreshCommand="{Binding LoadLeadsCommand}"
+                  IsRefreshing="{Binding IsBusy}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ImageCell ImageSource="{Binding Avatar}" Text="{Binding FirstName}" Detail="{Binding Company}"/>

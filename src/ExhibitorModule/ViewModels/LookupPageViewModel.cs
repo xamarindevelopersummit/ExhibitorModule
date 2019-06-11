@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using ExhibitorModule.Helpers;
 using ExhibitorModule.Models;
@@ -18,7 +16,7 @@ namespace ExhibitorModule.ViewModels
             _leadsService = leadsService;
         }
 
-        string _searchText;
+        private string _searchText;
         public string SearchText
         {
             get => _searchText;
@@ -29,8 +27,31 @@ namespace ExhibitorModule.ViewModels
             }
         }
 
-        ObservableCollection<Attendee> _searchResults = new ObservableCollection<Attendee>();
-        public ObservableCollection<Attendee> SearchResults { get => _searchResults; private set => _searchResults = value; }
+        private Attendee selectedAttendee;
+        public Attendee SelectedAttendee 
+        { 
+            get => selectedAttendee;
+            set
+            {
+                selectedAttendee = value;
+                if (value == null)
+                    return;
+
+                _leadsService.AddUpdateLead(new Lead
+                {
+                    FirstName = selectedAttendee.FirstName,
+                    LastName = selectedAttendee.LastName,
+                    Company = selectedAttendee.Company,
+                    Avatar = selectedAttendee.Avatar,
+                    AdmissionType = selectedAttendee.AdmissionType,
+                    Title = selectedAttendee.Title,
+                    VisitedAt = DateTime.Now
+                });
+                NavigationService.GoBackAsync();
+            }
+        }
+
+        public ObservableCollection<Attendee> SearchResults { get; } = new ObservableCollection<Attendee>();
 
         async void UpdateSearch(string query)
         {

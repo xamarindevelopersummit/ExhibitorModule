@@ -2,9 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="ExhibitorModule.Views.LookupPage"
+             xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
              xmlns:controls="clr-namespace:ExhibitorModule.Controls;assembly=ExhibitorModule.Controls"
              xmlns:strings="clr-namespace:ExhibitorModule.Strings;assembly=ExhibitorModule"
              Title="{Binding Title}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{prism:NavigateTo '../AddPersonPage'}" Icon="addperson"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -13,10 +18,14 @@
             </Grid.RowDefinitions>
             <controls:XDSSearchBar
                 Text="{Binding SearchText}" 
+                TextChanged="Handle_TextChanged"
                 BackgroundColor="{StaticResource Primary}" 
                 Placeholder="{x:Static strings:Resources.SearchAttendeesPlaceholder}"
                 CancelButtonColor="White"/>
-            <ListView Grid.Row="1" ItemsSource="{Binding SearchResults}">
+            <ListView x:Name="ResultsList"
+                      Grid.Row="1" 
+                      ItemsSource="{Binding SearchResults}" 
+                      SelectedItem="{Binding SelectedAttendee}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ImageCell ImageSource="{Binding Avatar}"
@@ -25,6 +34,22 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <controls:XDSButton x:Name="ManualAddButton"
+                                Text="+ Manually Add Someone" 
+                                Grid.Row="1" 
+                                HorizontalOptions="Center"
+                                VerticalOptions="Start"
+                                Command="{prism:NavigateTo '../AddPersonPage'}"
+                                IsVisible="false"
+                                Margin="8">
+                <!--<Button.Triggers>
+                    <DataTrigger TargetType="Button" 
+                                 Binding="{Binding SearchResults, Path=Children.Count}"
+                                 Value="0">
+                        <Setter Property="IsVisible" Value="True"/>
+                    </DataTrigger>
+                </Button.Triggers>-->
+            </controls:XDSButton>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -9,12 +9,12 @@ namespace ExhibitorModule.Services
 {
     public class LeadsService : ILeadsService
     {
-        List<Attendee> attendees;
-        List<Lead> fullList;
+        private readonly List<Attendee> _attendees;
+        private readonly List<Lead> _fullList;
 
         public LeadsService()
         {
-            attendees = new List<Attendee> {
+            _attendees = new List<Attendee> {
                 new Attendee { Id = "1", FirstName="Jonathan", LastName="P", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
                 new Attendee { Id = "2", FirstName="James", LastName="M", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
                 new Attendee { Id = "3", FirstName="Maddie", LastName="L", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
@@ -23,7 +23,7 @@ namespace ExhibitorModule.Services
                 new Attendee { Id = "6", FirstName="Shane", LastName="Something", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
             };
 
-            fullList = new List<Lead> {
+            _fullList = new List<Lead> {
                 new Lead { Id = "1", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about X" },
                 new Lead { Id = "2", FirstName="Hussain", LastName="Abbasi", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about Y" },
                 new Lead { Id = "3", FirstName="Shane", LastName="Something", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about Z" },
@@ -32,22 +32,25 @@ namespace ExhibitorModule.Services
 
         public async Task AddUpdateLead(Lead lead)
         {
-            fullList.Add(lead);
+            _fullList.Add(lead);
         }
 
         public async Task<Lead> GetLeadById(string id)
         {
-            return fullList.FirstOrDefault(_ => _.Id.Equals(id));
+            return _fullList.FirstOrDefault(_ => _.Id.Equals(id));
         }
 
         public async Task<List<Lead>> GetLeads()
         {
-            return fullList;
+            return _fullList.OrderByDescending(_=>_.VisitedAt).ToList();
         }
 
         public async Task<List<Lead>> GetLeads(string query)
         {
-            return fullList.Where(_=>_.FirstName.ToLower().Contains(query.ToLower()) || _.LastName.ToLower().Contains(query)).ToList();
+            if (string.IsNullOrWhiteSpace(query))
+                return await GetLeads();
+
+            return _fullList.Where(_=>_.FirstName.ToLower().Contains(query.ToLower()) || _.LastName.ToLower().Contains(query)).ToList();
         }
 
         public async Task<List<Attendee>> LooupAttendees(string query)
@@ -55,7 +58,7 @@ namespace ExhibitorModule.Services
             if (string.IsNullOrWhiteSpace(query))
                 return new List<Attendee>();
 
-            return attendees.Where(_ => _.FirstName.ToLower().Contains(query.ToLower()) || _.LastName.ToLower().Contains(query)).ToList();
+            return _attendees.Where(_ => _.FirstName.ToLower().Contains(query.ToLower()) || _.LastName.ToLower().Contains(query)).ToList();
         }
     }
 }

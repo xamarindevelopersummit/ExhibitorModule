@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using ExhibitorModule.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ExhibitorModule.ViewModels
 {
@@ -24,6 +25,7 @@ namespace ExhibitorModule.ViewModels
         {
             Title = Strings.Resources.MainPageTitle;
             _leadsService = leadsService;
+            LoadLeadsCommand = new DelegateCommand(OnLoadLeadsCommandsTapped);
         }
 
         private string _searchText;
@@ -44,24 +46,33 @@ namespace ExhibitorModule.ViewModels
             set { SetProperty(ref _leads, value); }
         }
 
-        async void Search(string query)
+        public DelegateCommand LoadLeadsCommand { get; set; }
+
+        private async void OnLoadLeadsCommandsTapped()
         {
             Leads.Clear();
-            var results = await _leadsService.GetLeads(query);
+            var results = await RunTask(GetLeads());
             foreach (var lead in results)
             {
                 Leads.Add(lead);
             }
         }
 
-        public async override void OnNavigatingTo(INavigationParameters parameters)
+        private Task<List<Lead>> GetLeads(string query = null) => _leadsService.GetLeads(query);
+
+        private async void Search(string query)
         {
             Leads.Clear();
-            var results = await _leadsService.GetLeads();
+            var results = await RunTask(GetLeads(query));
             foreach (var lead in results)
             {
                 Leads.Add(lead);
             }
+        }
+
+        public override void OnNavigatingTo(INavigationParameters parameters)
+        {
+            LoadLeadsCommand?.Execute();
         }
     }
 }

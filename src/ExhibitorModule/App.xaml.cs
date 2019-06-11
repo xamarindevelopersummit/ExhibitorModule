@@ -92,10 +92,11 @@ namespace ExhibitorModule
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<LookupPage, LookupPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddPersonPage, AddPersonPageViewModel>();
 
             containerRegistry.Register<IBase, Base>();
             containerRegistry.Register<IApiService, ApiService>();
-            containerRegistry.Register<ILeadsService, LeadsService>();
+            containerRegistry.RegisterSingleton<ILeadsService, LeadsService>();
             containerRegistry.Register<IEssentialsService, EssentialsService>();
             containerRegistry.Register<INetworkService, NetworkService>();
             containerRegistry.Register<IDatabase, Database>();

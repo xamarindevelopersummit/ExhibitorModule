@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
+             x:Class="ExhibitorModule.Views.AddPersonPage"
+             Title="{Binding Title}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Source="https://img.icons8.com/ios/100/000000/add-administrator.png" 
+                   Aspect="AspectFit"
+                   Margin="16"/>
+            <TableView Intent="Form" Grid.Row="1" HasUnevenRows="true">
+                <TableSection Title="CONTACT INFO">
+                    <EntryCell Label="First Name" Text="{Binding Current.FirstName}"/>
+                    <EntryCell Label="Last Name" Text="{Binding Current.LastName}"/>
+                    <EntryCell Label="Email" Text="abc@yahoo.com"/>
+                </TableSection>
+                <TableSection Title="COMPANY">
+                    <EntryCell Label="Company" Text="{Binding Current.Company}"/>
+                    <EntryCell Label="Title" Text="{Binding Current.Title}"/>
+                </TableSection>
+                <TableSection Title="NOTES">
+                    <ViewCell>
+                        <Editor Text="{Binding Current.Notes}"
+                                Keyboard="Text"
+                                HeightRequest="200"/>
+                    </ViewCell>
+                </TableSection>
+            </TableView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

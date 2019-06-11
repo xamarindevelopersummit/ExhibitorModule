@@ -187,6 +187,10 @@
     <ImageAsset Include="Assets.xcassets\addperson.imageset\outline_person_add_white_24pt_1x.png" />
     <ImageAsset Include="Assets.xcassets\addperson.imageset\outline_person_add_white_24pt_2x.png" />
     <ImageAsset Include="Assets.xcassets\addperson.imageset\outline_person_add_white_24pt_3x.png" />
+    <ImageAsset Include="Assets.xcassets\search.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\search.imageset\outline_search_white_24pt_1x.png" />
+    <ImageAsset Include="Assets.xcassets\search.imageset\outline_search_white_24pt_2x.png" />
+    <ImageAsset Include="Assets.xcassets\search.imageset\outline_search_white_24pt_3x.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -281,6 +285,7 @@
     <Folder Include="Assets.xcassets\AppIcon2.appiconset\" />
     <Folder Include="Services\" />
     <Folder Include="Assets.xcassets\addperson.imageset\" />
+    <Folder Include="Assets.xcassets\search.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="iTunesArtwork%402x" />
