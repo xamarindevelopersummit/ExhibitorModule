@@ -19,6 +19,9 @@
     <data name="MainPageTitle" xml:space="preserve">
         <value>LEADS</value>
     </data>
+    <data name="LookupPageTitle" xml:space="preserve">
+        <value>LOOKUP ATTENDEES</value>
+    </data>
     <data name="AboutPageTitle" xml:space="preserve">
         <value>ABOUT</value>
     </data>
@@ -48,6 +51,12 @@
     <data name="OfflineMessage" xml:space="preserve">
         <value>Oops. Lost connection.</value>
         <comment>Offline message</comment>
+    </data>
+    <data name="SearchLeadsPlaceholder" xml:space="preserve">
+        <value>Search leads...</value>
+    </data>
+    <data name="SearchAttendeesPlaceholder" xml:space="preserve">
+        <value>Enter name...</value>
     </data>
     <!--#endif -->
 </root>

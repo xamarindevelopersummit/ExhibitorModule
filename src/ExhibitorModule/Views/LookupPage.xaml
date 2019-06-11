@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="ExhibitorModule.Views.LookupPage"
+             xmlns:controls="clr-namespace:ExhibitorModule.Controls;assembly=ExhibitorModule.Controls"
+             xmlns:strings="clr-namespace:ExhibitorModule.Strings;assembly=ExhibitorModule"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <controls:XDSSearchBar
+                Text="{Binding SearchText}" 
+                BackgroundColor="{StaticResource Primary}" 
+                Placeholder="{x:Static strings:Resources.SearchAttendeesPlaceholder}"
+                CancelButtonColor="White"/>
+            <ListView Grid.Row="1" ItemsSource="{Binding SearchResults}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell ImageSource="{Binding Avatar}"
+                                   Text="{Binding FullName}"
+                                   Detail="{Binding Company}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,41 +1,34 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ExhibitorModule.Services;
-using ExhibitorModule.Views;
-using Prism;
-using Prism.Ioc;
-using Prism.Plugin.Popups;
 using Acr.UserDialogs;
-using Unity;
-using Prism.Unity;
+using ExhibitorModule.Data;
+using ExhibitorModule.Data.Abstractions;
 using ExhibitorModule.Helpers;
+using ExhibitorModule.Services;
+using ExhibitorModule.Services.Abstractions;
+using ExhibitorModule.ViewModels;
+using ExhibitorModule.Views;
 using FFImageLoading.Helpers;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
-using Prism.Logging;
-using Xamarin.Forms;
-using DebugLogger = ExhibitorModule.Services.DebugLogger;
-using ExhibitorModule.Services.Abstractions;
-using Plugin.DeviceInfo;
-using Plugin.DeviceInfo.Abstractions;
 using Plugin.Calendars;
 using Plugin.Calendars.Abstractions;
-using Plugin.Permissions.Abstractions;
-using Plugin.Permissions;
-using ExhibitorModule.Common;
-using ExhibitorModule.Data.Abstractions;
-using ExhibitorModule.Data;
-using Xamarin.Essentials;
-using Prism.Events;
-using ExhibitorModule.Models;
-using System.Reflection;
-using Prism.Navigation;
-using Plugin.FirebasePushNotification.Abstractions;
+using Plugin.DeviceInfo;
+using Plugin.DeviceInfo.Abstractions;
 using Plugin.FirebasePushNotification;
-using ExhibitorModule.ViewModels;
-using System.Collections.Generic;
+using Plugin.FirebasePushNotification.Abstractions;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
+using Prism;
+using Prism.Ioc;
+using Prism.Logging;
+using Prism.Plugin.Popups;
+using Prism.Unity;
+using Unity;
+using Xamarin.Essentials;
+using DebugLogger = ExhibitorModule.Services.DebugLogger;
 
 namespace ExhibitorModule
 {
@@ -72,13 +65,7 @@ namespace ExhibitorModule
 
         private void SetDefault()
         {
-            var cache = Container.Resolve<ICacheService>();
-
-            if(string.IsNullOrWhiteSpace(cache.Device?.GetObject<string>(CacheKeys.ConstructionDonateLink)))
-                cache?.Device?.AddOrUpdateValue(CacheKeys.ConstructionDonateLink, Secrets.ConstructionDonateUrl);
-
-            if (string.IsNullOrWhiteSpace(cache.Device?.GetObject<string>(CacheKeys.GeneralDonateLink)))
-                cache?.Device?.AddOrUpdateValue(CacheKeys.GeneralDonateLink, Secrets.ExpensesDonateUrl);
+            // Cache any configs for local use
         }
 
         protected override async void OnInitialized()
@@ -104,9 +91,11 @@ namespace ExhibitorModule
             containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<LookupPage, LookupPageViewModel>();
 
             containerRegistry.Register<IBase, Base>();
             containerRegistry.Register<IApiService, ApiService>();
+            containerRegistry.Register<ILeadsService, LeadsService>();
             containerRegistry.Register<IEssentialsService, EssentialsService>();
             containerRegistry.Register<INetworkService, NetworkService>();
             containerRegistry.Register<IDatabase, Database>();

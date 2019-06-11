@@ -7,10 +7,32 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core" 
              xmlns:windows="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:controls="clr-namespace:ExhibitorModule.Controls;assembly=ExhibitorModule.Controls"
+             xmlns:strings="clr-namespace:ExhibitorModule.Strings;assembly=ExhibitorModule"
              Title="{Binding Title}" 
              x:Class="ExhibitorModule.Views.MainPage">
     
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" Icon="addperson"/>
         <ToolbarItem Text="Settings" Command="{prism:NavigateTo SettingsPage}" Icon="settings"/>
     </ContentPage.ToolbarItems>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <controls:XDSSearchBar 
+            Text="{Binding SearchText}" 
+            BackgroundColor="{StaticResource Primary}" 
+            Placeholder="{x:Static strings:Resources.SearchLeadsPlaceholder}"
+            CancelButtonColor="White"/>
+        <ListView Grid.Row="1" ItemsSource="{Binding Leads}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ImageCell ImageSource="{Binding Avatar}" Text="{Binding FirstName}" Detail="{Binding Company}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>    
+    </Grid>
 </ContentPage>

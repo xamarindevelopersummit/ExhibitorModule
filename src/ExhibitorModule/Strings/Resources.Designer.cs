@@ -59,6 +59,12 @@ namespace ExhibitorModule.Strings {
             }
         }
         
+        internal static string LookupPageTitle {
+            get {
+                return ResourceManager.GetString("LookupPageTitle", resourceCulture);
+            }
+        }
+        
         internal static string AboutPageTitle {
             get {
                 return ResourceManager.GetString("AboutPageTitle", resourceCulture);
@@ -104,6 +110,18 @@ namespace ExhibitorModule.Strings {
         internal static string OfflineMessage {
             get {
                 return ResourceManager.GetString("OfflineMessage", resourceCulture);
+            }
+        }
+        
+        internal static string SearchLeadsPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchLeadsPlaceholder", resourceCulture);
+            }
+        }
+        
+        internal static string SearchAttendeesPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchAttendeesPlaceholder", resourceCulture);
             }
         }
     }
