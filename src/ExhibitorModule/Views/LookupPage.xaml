@@ -5,6 +5,9 @@
              xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
              xmlns:controls="clr-namespace:ExhibitorModule.Controls;assembly=ExhibitorModule.Controls"
              xmlns:strings="clr-namespace:ExhibitorModule.Strings;assembly=ExhibitorModule"
+             xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              Title="{Binding Title}">
     
     <ContentPage.ToolbarItems>
@@ -25,12 +28,38 @@
             <ListView x:Name="ResultsList"
                       Grid.Row="1" 
                       ItemsSource="{Binding SearchResults}" 
-                      SelectedItem="{Binding SelectedAttendee}">
+                      SelectedItem="{Binding SelectedAttendee}"
+                      HasUnevenRows="true"
+                      SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ImageCell ImageSource="{Binding Avatar}"
-                                   Text="{Binding FullName}"
-                                   Detail="{Binding Company}"/>
+                        <ViewCell>
+                            <Grid InputTransparent="true">
+                                <ia:CardView Margin="16,8" Visual="Material" Padding="8">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ff:CachedImage Source="{Binding Avatar}" Grid.RowSpan="2" HorizontalOptions="Start">
+                                            <ff:CachedImage.Transformations>
+                                                <fft:CircleTransformation />
+                                            </ff:CachedImage.Transformations>
+                                        </ff:CachedImage>
+                                        <Label Text="{Binding FirstName}" FontSize="Medium" Grid.Column="1"/>
+                                        <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                                            <Label Text="{Binding Title}" FontSize="Small" TextColor="Gray"/>
+                                            <Label Text="|" FontSize="Small" TextColor="Gray"/>
+                                            <Label Text="{Binding Company}" FontSize="Small" TextColor="Gray"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </ia:CardView>
+                            </Grid>
+                    </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

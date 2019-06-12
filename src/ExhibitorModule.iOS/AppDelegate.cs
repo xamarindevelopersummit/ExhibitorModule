@@ -3,6 +3,7 @@ using Foundation;
 using Microsoft.AppCenter.Distribute;
 using Plugin.FirebasePushNotification;
 using UIKit;
+using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 namespace ExhibitorModule.iOS
@@ -12,6 +13,7 @@ namespace ExhibitorModule.iOS
     {
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
+            Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init();
             global::Xamarin.Forms.FormsMaterial.Init();
             global::Rg.Plugins.Popup.Popup.Init();

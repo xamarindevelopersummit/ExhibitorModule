@@ -31,6 +31,7 @@ namespace ExhibitorModule.Droid
 
             global::Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
+            global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             global::FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);

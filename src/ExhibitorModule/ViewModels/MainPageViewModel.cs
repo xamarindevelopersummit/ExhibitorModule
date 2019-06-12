@@ -26,6 +26,12 @@ namespace ExhibitorModule.ViewModels
             Title = Strings.Resources.MainPageTitle;
             _leadsService = leadsService;
             LoadLeadsCommand = new DelegateCommand(OnLoadLeadsCommandsTapped);
+            ShowNotes = new DelegateCommand<Lead>(OnNotesTapped);
+        }
+
+        private void OnNotesTapped(Lead lead)
+        {
+            PageDialogService.DisplayAlertAsync($"{lead?.FirstName} {lead?.LastName}", $"Notes: {lead?.Notes}", "OK");
         }
 
         private string _searchText;
@@ -47,6 +53,7 @@ namespace ExhibitorModule.ViewModels
         }
 
         public DelegateCommand LoadLeadsCommand { get; set; }
+        public DelegateCommand<Lead> ShowNotes { get; set; }
 
         private async void OnLoadLeadsCommandsTapped()
         {
