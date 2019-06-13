@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Prism.Core" Version="7.2.0.1347-pre" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.6.929" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.0.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.8.2" />

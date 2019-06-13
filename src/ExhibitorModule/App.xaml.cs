@@ -106,6 +106,8 @@ namespace ExhibitorModule
             containerRegistry.RegisterSingleton<IMemoryCache, MemoryCache>();
             containerRegistry.RegisterSingleton<IDeviceCache, DeviceCache>();
             containerRegistry.RegisterSingleton<ICacheService, CacheService>();
+
+            containerRegistry.RegisterDialog<NotesDialog, NotesDialogViewModel>();
         }
 
         protected override async void OnStart()

@@ -13,25 +13,38 @@ using ExhibitorModule.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Prism.Services.Dialogs;
 
 namespace ExhibitorModule.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
         private readonly ILeadsService _leadsService;
+        private readonly IDialogService _dialogService;
 
-        public MainPageViewModel(IBase @base, ILeadsService leadsService)
+        public MainPageViewModel(IBase @base, ILeadsService leadsService, IDialogService dialogService)
             : base(@base)
         {
             Title = Strings.Resources.MainPageTitle;
             _leadsService = leadsService;
+            _dialogService = dialogService;
             LoadLeadsCommand = new DelegateCommand(OnLoadLeadsCommandsTapped);
             ShowNotes = new DelegateCommand<Lead>(OnNotesTapped);
         }
 
         private void OnNotesTapped(Lead lead)
         {
-            PageDialogService.DisplayAlertAsync($"{lead?.FirstName} {lead?.LastName}", $"Notes: {lead?.Notes}", "OK");
+            _dialogService.ShowDialog(nameof(NotesDialog), new DialogParameters { { "Lead", lead } }, HandleAction);
+        }
+
+        void HandleAction(IDialogResult obj)
+        {
+            if (!obj.Parameters.Any())
+                return;
+            foreach (var key in obj.Parameters.Keys)
+            {
+                Console.WriteLine($"Key:{key}, Value:{obj.Parameters.GetValue<object>(key).ToString()}");
+            }
         }
 
         private string _searchText;
