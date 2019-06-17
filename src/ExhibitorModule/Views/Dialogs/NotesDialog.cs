@@ -1,19 +1,29 @@
 ﻿using System;
 using ExhibitorModule.Controls;
 using ExhibitorModule.Models;
+using IntelliAbb.Xamarin.Controls;
 using Prism.Services.Dialogs;
+using Prism.Services.Dialogs.Xaml;
 using Xamarin.Forms;
 
 namespace ExhibitorModule.Views
 {
     public class NotesDialog : ContentView
     {
+        private CardView _cardView;
+
         public NotesDialog()
         {
-            BuildView();
+            Content = BuildView();
+
+            _cardView.TranslationY = 100;
+
+            var x = (Width / 2) - _cardView.Width / 2;
+            var y = (Height / 2 ) - _cardView.Height / 2;
+            _cardView.TranslateTo(x, y, easing: Easing.SpringOut);
         }
 
-        private void BuildView()
+        private View BuildView()
         {
             var title = new Label
             {
@@ -33,22 +43,21 @@ namespace ExhibitorModule.Views
                 Text = "Save"
             };
             saveButton.SetBinding(Button.CommandProperty, new Binding("SaveCommand"));
-
-            Content = new IntelliAbb.Xamarin.Controls.CardView
+            _cardView = new CardView
             {
                 Visual = VisualMarker.Material,
-                Padding = 8,
-                Margin = new Thickness(40,80),
-                WidthRequest=200,
-                HeightRequest=250,
+                Padding = 16,
                 Content = new StackLayout {
                     Children = { 
                         title,
                         editor,
                         saveButton
                     }
-                }
+                },
+                HeightRequest = 200
             };
+            DialogLayout.SetRelativeWidthRequest(this, 0.75);
+            return _cardView;
         }
     }
 }

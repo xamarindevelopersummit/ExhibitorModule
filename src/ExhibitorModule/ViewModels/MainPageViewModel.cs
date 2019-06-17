@@ -34,7 +34,10 @@ namespace ExhibitorModule.ViewModels
 
         private void OnNotesTapped(Lead lead)
         {
-            _dialogService.ShowDialog(nameof(NotesDialog), new DialogParameters { { "Lead", lead } }, HandleAction);
+            _dialogService.ShowDialog(nameof(NotesDialog), new DialogParameters { 
+                    { "Lead", lead },
+                    { KnownDialogParameters.CloseOnBackgroundTapped, true }
+                }, HandleAction);
         }
 
         void HandleAction(IDialogResult obj)
@@ -70,9 +73,14 @@ namespace ExhibitorModule.ViewModels
 
         private async void OnLoadLeadsCommandsTapped()
         {
-            Leads.Clear();
             var results = await RunTask(GetLeads());
-            foreach (var lead in results)
+            LoadLeads(results);
+        }
+
+        private void LoadLeads(List<Lead> leads)
+        {
+            Leads.Clear();
+            foreach (var lead in leads)
             {
                 Leads.Add(lead);
             }
@@ -82,15 +90,11 @@ namespace ExhibitorModule.ViewModels
 
         private async void Search(string query)
         {
-            Leads.Clear();
             var results = await RunTask(GetLeads(query));
-            foreach (var lead in results)
-            {
-                Leads.Add(lead);
-            }
+            LoadLeads(results);
         }
 
-        public override void OnNavigatingTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             LoadLeadsCommand?.Execute();
         }

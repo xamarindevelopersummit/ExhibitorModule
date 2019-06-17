@@ -13,7 +13,6 @@ namespace ExhibitorModule.ViewModels
 
         public NotesDialogViewModel(IBase @base, ILeadsService leadsService) : base(@base)
         {
-            Title = "Notes";
             _leadsService = leadsService;
             SaveCommand = new DelegateCommand(OnSaveTapped);
         }
@@ -35,13 +34,14 @@ namespace ExhibitorModule.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            if (parameters.ContainsKey("Lead"))
-                CurrentLead = parameters.GetValue<Lead>("Lead");
-            else
+            if (!parameters.ContainsKey("Lead"))
             {
                 PageDialogService.DisplayAlertAsync("Error", "Could not load a lead. Please try again.", "OK");
                 RequestClose?.Invoke(null);
             }
+
+            CurrentLead = parameters.GetValue<Lead>("Lead");
+            Title = $"Notes for {CurrentLead.FirstName}";
         }
 
         public DelegateCommand SaveCommand { get; }
