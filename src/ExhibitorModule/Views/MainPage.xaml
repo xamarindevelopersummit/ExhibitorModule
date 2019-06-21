@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:prism="clr-namespace:Prism.Navigation.Xaml;assembly=Prism.Forms"
@@ -58,13 +58,19 @@
                                             <fft:CircleTransformation />
                                         </ff:CachedImage.Transformations>
                                     </ff:CachedImage>
-                                    <Label Text="{Binding FirstName}" FontSize="Medium" Grid.Column="1"
+                                    <Label Text="{Binding FullName}" FontSize="Medium" Grid.Column="1"
                                             InputTransparent="true"/>
                                     <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1" 
                                                  InputTransparent="true">
-                                        <Label Text="{Binding Title}" FontSize="Small" TextColor="Gray"/>
-                                        <Label Text="|" FontSize="Small" TextColor="Gray"/>
-                                        <Label Text="{Binding Company}" FontSize="Small" TextColor="Gray"/>
+                                        <Label Text="{Binding Title}" 
+                                               FontSize="Small" 
+                                               TextColor="Gray" 
+                                               FontAttributes="Bold"
+                                               VerticalOptions="End"/>
+                                        <Label Text="{Binding Company}" 
+                                               FontSize="Micro" 
+                                               TextColor="Gray" 
+                                               VerticalOptions="End"/>
                                     </StackLayout>
                                     
                                     <ImageButton Source="notes" 
@@ -74,7 +80,8 @@
                                                  WidthRequest="24"
                                                  Grid.RowSpan="2"
                                                  Grid.Column="1"
-                                                 HorizontalOptions="End"/>
+                                                 HorizontalOptions="End"
+                                                 Opacity="0.5"/>
                                 </Grid>
                             </ia:CardView>
                         </Grid>

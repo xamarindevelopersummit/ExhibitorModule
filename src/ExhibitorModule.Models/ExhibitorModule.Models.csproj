@@ -19,4 +19,7 @@
   <ItemGroup>
     <Compile Remove="Event.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTO\" />
+  </ItemGroup>
 </Project>

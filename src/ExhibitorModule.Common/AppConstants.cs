@@ -2,7 +2,7 @@
 {
     public static class AppConstants
     {
-        public static string Host => "http://www.xamarindevelopersummit.com";
+        public static string Host => "https://xamdevsummitbackend.azurewebsites.net";
         public static string TitleKey => "title_key";
         public static string DescriptionKey => "desc_key";
         public const int DefaultGetRetryCount = 3;

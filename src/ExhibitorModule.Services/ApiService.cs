@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ExhibitorModule.Common;
 using ExhibitorModule.Models;
 using ExhibitorModule.Services.Abstractions;
+using ExhibitorModule.Services.Helpers;
 
 namespace ExhibitorModule.Services
 {
@@ -15,14 +16,14 @@ namespace ExhibitorModule.Services
         readonly IEssentialsService _essentialsService;
 
 
-        public ApiService(INetworkService networkService, IEssentialsService essentialsService)
+        public ApiService(INetworkService networkService, IEssentialsService essentialsService, IClientConfig clientConfig)
         {
             _networkService = networkService;
             _essentialsService = essentialsService;
 
-            _client = new HttpClient
+            _client = new HttpClient(new XdsHttpClientHandler(clientConfig))
             {
-                BaseAddress = new Uri(AppConstants.Host)
+                BaseAddress = new Uri(clientConfig.BaseAddress)
             };
         }
 

@@ -15,18 +15,18 @@ namespace ExhibitorModule.Services
         public LeadsService()
         {
             _attendees = new List<Attendee> {
-                new Attendee { Id = "1", FirstName="Jonathan", LastName="P", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
-                new Attendee { Id = "2", FirstName="James", LastName="M", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
-                new Attendee { Id = "3", FirstName="Maddie", LastName="L", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
-                new Attendee { Id = "4", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
-                new Attendee { Id = "5", FirstName="Hussain", LastName="Abbasi", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
-                new Attendee { Id = "6", FirstName="Shane", LastName="Something", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q" },
+                new Attendee { Id = "1", FirstName="Jonathan", LastName="P", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
+                new Attendee { Id = "2", FirstName="James", LastName="M", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
+                new Attendee { Id = "3", FirstName="Maddie", LastName="L", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
+                new Attendee { Id = "4", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
+                new Attendee { Id = "5", FirstName="Hussain", LastName="Abbasi", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
+                new Attendee { Id = "6", FirstName="Shane", LastName="Something", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
             };
 
             _fullList = new List<Lead> {
-                new Lead { Id = "1", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about X" },
+                new Lead { Id = "1", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Owner", Company="AvantiPoint LLC", Avatar="https://media.licdn.com/dms/image/C5603AQHJhIia5wa_tw/profile-displayphoto-shrink_800_800/0?e=1566432000&v=beta&t=iBrLuAs8wnhYfVCBQaPIi7W5YZ1kOmoFuDPoxHAER70", ExhibitorId = "1", Notes="Talked about X" },
                 new Lead { Id = "2", FirstName="Hussain", LastName="Abbasi", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about Y" },
-                new Lead { Id = "3", FirstName="Shane", LastName="Something", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about Z" },
+                new Lead { Id = "3", FirstName="Allan", LastName="Ritchie", AdmissionType=AdmissionType.General, Title="Microsoft MVP", Avatar="https://media.licdn.com/dms/image/C4E03AQGwQT1RAN5gRw/profile-displayphoto-shrink_800_800/0?e=1566432000&v=beta&t=835JVTNnuPjfPdELLM80vi0cLTfEfi8sP9HPK7pmFVI", ExhibitorId = "1", Notes="Talked about Z" },
             };
         }
 
