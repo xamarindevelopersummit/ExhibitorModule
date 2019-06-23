@@ -3,13 +3,28 @@ namespace ExhibitorModule.Models
 {
     public class Attendee
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string TicketNumber { get; set; }
+
+        public string TicketType { get; set; }
+
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
-        public string FullName => $"{FirstName} {LastName}";
+
         public string Company { get; set; }
-        public string Title { get; set; }
-        public string Avatar { get; set; }
-        public AdmissionType AdmissionType { get; set; }
+
+        public DateTimeOffset PaymentDate { get; set; }
+
+        public string DiscountCode { get; set; }
+
+        public decimal TicketPrice { get; set; }
+
+        public string GravatarUri { get; set; }
     }
 }

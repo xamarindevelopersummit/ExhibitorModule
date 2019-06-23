@@ -29,10 +29,10 @@ namespace ExhibitorModule.ViewModels
             _leadsService = leadsService;
             _dialogService = dialogService;
             LoadLeadsCommand = new DelegateCommand(OnLoadLeadsCommandsTapped);
-            ShowNotes = new DelegateCommand<Lead>(OnNotesTapped);
+            ShowNotes = new DelegateCommand<LeadItem>(OnNotesTapped);
         }
 
-        private void OnNotesTapped(Lead lead)
+        private void OnNotesTapped(LeadItem lead)
         {
             _dialogService.ShowDialog(nameof(NotesDialog), new DialogParameters { 
                     { "Lead", lead },
@@ -61,15 +61,15 @@ namespace ExhibitorModule.ViewModels
             }
         }
 
-        private ObservableCollection<Lead> _leads = new ObservableCollection<Lead>();
-        public ObservableCollection<Lead> Leads
+        private ObservableCollection<LeadItem> _leads = new ObservableCollection<LeadItem>();
+        public ObservableCollection<LeadItem> Leads
         {
             get => _leads;
             set { SetProperty(ref _leads, value); }
         }
 
         public DelegateCommand LoadLeadsCommand { get; set; }
-        public DelegateCommand<Lead> ShowNotes { get; set; }
+        public DelegateCommand<LeadItem> ShowNotes { get; set; }
 
         private async void OnLoadLeadsCommandsTapped()
         {
@@ -77,16 +77,24 @@ namespace ExhibitorModule.ViewModels
             LoadLeads(results);
         }
 
-        private void LoadLeads(List<Lead> leads)
+        private void LoadLeads(List<LeadItem> leads)
         {
             Leads.Clear();
+            if (leads == null)
+                return;
             foreach (var lead in leads)
             {
                 Leads.Add(lead);
             }
         }
 
-        private Task<List<Lead>> GetLeads(string query = null) => _leadsService.GetLeads(query);
+        private Task<List<LeadItem>> GetLeads(string query = null)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return _leadsService.LookupLead(query);
+
+            return _leadsService.GetLeads();
+        }
 
         private async void Search(string query)
         {
@@ -97,6 +105,7 @@ namespace ExhibitorModule.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             LoadLeadsCommand?.Execute();
+            _leadsService.GetAttendees();
         }
     }
 }

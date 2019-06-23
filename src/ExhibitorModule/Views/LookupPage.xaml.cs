@@ -25,7 +25,8 @@ namespace ExhibitorModule.Views
         private void Handle_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
         {
             if (vm == null) return;
-            ManualAddButton.IsVisible = vm.SearchResults.Count < 1;
+            //ManualAddButton.IsVisible = vm.SearchResults.Count < 1;
+            NoResultsLabel.IsVisible = vm.SearchResults.Count < 1;
         }
     }
 }

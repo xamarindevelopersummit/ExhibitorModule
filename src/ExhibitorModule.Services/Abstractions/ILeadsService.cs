@@ -7,10 +7,12 @@ namespace ExhibitorModule.Services.Abstractions
 {
     public interface ILeadsService
     {
-        Task<List<Lead>> GetLeads();
-        Task<List<Lead>> GetLeads(string query);
-        Task<Lead> GetLeadById(string id);
+        Task<List<LeadItem>> GetLeads();
+        Task<LeadItem> GetLeadById(Guid id);
+        Task<List<LeadItem>> LookupLead(string query);
         Task AddUpdateLead(Lead lead);
-        Task<List<Attendee>> LooupAttendees(string query);
+        Task<List<Attendee>> GetAttendees();
+        Task<Attendee> GetAttendeeById(Guid id);
+        Task<List<Attendee>> LookupAttendees(string query);
     }
 }

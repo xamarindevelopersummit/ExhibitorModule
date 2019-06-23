@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:strings="clr-namespace:ExhibitorModule.Strings;assembly=ExhibitorModule"
@@ -15,7 +15,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <TableView Intent="Settings" HasUnevenRows="true">
-            <TableSection Title="{x:Static strings:Resources.SettingsPageTitle}">
+            <!--<TableSection Title="{x:Static strings:Resources.SettingsPageTitle}">
                 <ViewCell>
                     <StackLayout Padding="20" BackgroundColor="White">
                         <Label Text="Some Setting" TextColor="Black"/>
@@ -24,7 +24,7 @@
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                 </ViewCell>
-            </TableSection>
+            </TableSection>-->
             <TableSection Title="{x:Static strings:Resources.AboutPageTitle}">
                 <ViewCell>
                     <StackLayout Padding="20" BackgroundColor="White">

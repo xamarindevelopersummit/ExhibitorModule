@@ -1,12 +1,12 @@
 ﻿using System;
 namespace ExhibitorModule.Models
 {
-    public class Lead : Attendee
+    public class Lead
     {
-        public string LeadId { get; set; }
-        public string ExhibitorId { get; set; }
+        public Guid Id { get; set; }
+        public Guid AttendeeId { get; set; }
+        public Guid ExhibitorId { get; set; }
         public string Notes { get; set; }
-        public DateTime VisitedAt { get; set; }
-        public DateTime VisitEndedAt { get; set; }
+        public DateTimeOffset LastUpdate { get; set; }
     }
 }

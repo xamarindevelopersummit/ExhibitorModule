@@ -23,8 +23,8 @@ namespace ExhibitorModule.ViewModels
             RequestClose?.Invoke(new DialogParameters { { "Lead", CurrentLead } });
         }
 
-        private Lead _currentLead;
-        public Lead CurrentLead { get => _currentLead; private set { SetProperty(ref _currentLead, value); } }
+        private LeadItem _currentLead;
+        public LeadItem CurrentLead { get => _currentLead; private set { SetProperty(ref _currentLead, value); } }
 
         public event Action<IDialogParameters> RequestClose;
 
@@ -40,8 +40,8 @@ namespace ExhibitorModule.ViewModels
                 RequestClose?.Invoke(null);
             }
 
-            CurrentLead = parameters.GetValue<Lead>("Lead");
-            Title = $"Notes for {CurrentLead.FirstName}";
+            CurrentLead = parameters.GetValue<LeadItem>("Lead");
+            Title = $"Notes for {CurrentLead.Attendee.FirstName}";
         }
 
         public DelegateCommand SaveCommand { get; }

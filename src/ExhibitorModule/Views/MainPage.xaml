@@ -17,7 +17,7 @@
              x:Name="this">
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" Icon="search"/>
+        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" />
         <ToolbarItem Text="Settings" Command="{prism:NavigateTo SettingsPage}" Icon="settings"/>
     </ContentPage.ToolbarItems>
     
@@ -50,7 +50,7 @@
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
                                     
-                                    <ff:CachedImage Source="{Binding Avatar}" 
+                                    <ff:CachedImage Source="{Binding Attendee.GravatarUri}" 
                                                     Grid.RowSpan="2" 
                                                     HorizontalOptions="Start"
                                                     InputTransparent="true">
@@ -58,16 +58,23 @@
                                             <fft:CircleTransformation />
                                         </ff:CachedImage.Transformations>
                                     </ff:CachedImage>
-                                    <Label Text="{Binding FullName}" FontSize="Medium" Grid.Column="1"
-                                            InputTransparent="true"/>
-                                    <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1" 
+                                    <Label FontSize="Medium" Grid.Column="1"
+                                            InputTransparent="true">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Attendee.FirstName, Mode=OneWay}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding Attendee.LastName, Mode=OneWay}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <StackLayout Grid.Column="1" Grid.Row="1" 
                                                  InputTransparent="true">
-                                        <Label Text="{Binding Title}" 
+                                        <Label Text="{Binding Attendee.Company}" 
                                                FontSize="Small" 
                                                TextColor="Gray" 
-                                               FontAttributes="Bold"
                                                VerticalOptions="End"/>
-                                        <Label Text="{Binding Company}" 
+                                        <Label Text="{Binding LastUPdate, StringFormat='{0:YYYY-MM-d hh\\:mm}'}" 
                                                FontSize="Micro" 
                                                TextColor="Gray" 
                                                VerticalOptions="End"/>

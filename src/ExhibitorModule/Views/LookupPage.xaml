@@ -45,21 +45,25 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
-                                        <ff:CachedImage Source="{Binding Avatar}"
+                                        <ff:CachedImage Source="{Binding GravatarUri}"
                                                         Grid.RowSpan="2" 
                                                         HorizontalOptions="Start">
                                             <ff:CachedImage.Transformations>
                                                 <fft:CircleTransformation />
                                             </ff:CachedImage.Transformations>
                                         </ff:CachedImage>
-                                        <Label Text="{Binding FirstName}" FontSize="Medium" Grid.Column="1"/>
-                                        <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
-                                            <Label Text="{Binding Title}" 
-                                               FontSize="Small" 
-                                               TextColor="Gray" 
-                                               FontAttributes="Bold"
-                                               VerticalOptions="End"/>
-                                        <Label Text="{Binding Company}" 
+                                        <Label FontSize="Medium" Grid.Column="1"
+                                            InputTransparent="true">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding FirstName, Mode=OneWay}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding LastName, Mode=OneWay}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                        <StackLayout Grid.Column="1" Grid.Row="1">
+                                            <Label Text="{Binding Company}" 
                                                FontSize="Micro" 
                                                TextColor="Gray" 
                                                VerticalOptions="End"/>
@@ -71,22 +75,22 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <controls:XDSButton x:Name="ManualAddButton"
+            <Label x:Name="NoResultsLabel"
+                   Grid.Row="1" 
+                   Text="No attendees found"
+                   TextColor="Gray" 
+                   FontSize="Small"
+                   HorizontalTextAlignment="Center"
+                   Margin="8"
+                    IsVisible="false"/>
+           <!-- <controls:XDSButton x:Name="ManualAddButton"
                                 Text="+ Manually Add Someone" 
                                 Grid.Row="1" 
                                 HorizontalOptions="Center"
                                 VerticalOptions="Start"
                                 Command="{prism:NavigateTo '../AddPersonPage'}"
                                 IsVisible="false"
-                                Margin="8">
-                <!--<Button.Triggers>
-                    <DataTrigger TargetType="Button" 
-                                 Binding="{Binding SearchResults, Path=Children.Count}"
-                                 Value="0">
-                        <Setter Property="IsVisible" Value="True"/>
-                    </DataTrigger>
-                </Button.Triggers>-->
-            </controls:XDSButton>
+                                Margin="8"/>-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -24,6 +24,7 @@ using Plugin.Permissions.Abstractions;
 using Prism;
 using Prism.Ioc;
 using Prism.Logging;
+using Prism.Modularity;
 using Prism.Plugin.Popups;
 using Prism.Unity;
 using Unity;
@@ -32,7 +33,7 @@ using DebugLogger = ExhibitorModule.Services.DebugLogger;
 
 namespace ExhibitorModule
 {
-    public partial class App : PrismApplication, IDisposable
+    public partial class App : PrismApplication
     {
         /* 
          * NOTE: 
@@ -72,42 +73,18 @@ namespace ExhibitorModule
         {
             InitializeComponent();
             LogUnobservedTaskExceptions();
-            SubsribeEvents();
+            //SubsribeEvents();
             await NavigationService.NavigateAsync($"{nameof(RootNavigationPage)}/{nameof(MainPage)}");//?selectedTab=EventsPage");//WebPage?title_key=Testing&source_url_key=http://cypressislamiccenter.org/blog/2017/09/06/hiring-teachers-now-for-sunday-school/");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterPopupNavigationService();
+            containerRegistry.Register<IClientConfig, Configs>();
+        }
 
-            containerRegistry.RegisterInstance(CreateLogger());
-            containerRegistry.RegisterInstance<IUserDialogs>(UserDialogs.Instance);
-            containerRegistry.RegisterInstance<IDeviceInfo>(CrossDeviceInfo.Current);
-            containerRegistry.RegisterInstance<ICalendars>(CrossCalendars.Current);
-            containerRegistry.RegisterInstance<IPermissions>(CrossPermissions.Current);
-            containerRegistry.RegisterInstance<IFirebasePushNotification>(CrossFirebasePushNotification.Current);
-
-            containerRegistry.RegisterForNavigation<RootNavigationPage, RootNavigationPageViewModel>();
-            containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
-            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<LookupPage, LookupPageViewModel>();
-            containerRegistry.RegisterForNavigation<AddPersonPage, AddPersonPageViewModel>();
-
-            containerRegistry.Register<IBase, Base>();
-            containerRegistry.Register<IApiService, ApiService>();
-            containerRegistry.RegisterSingleton<ILeadsService, LeadsService>();
-            containerRegistry.Register<IEssentialsService, EssentialsService>();
-            containerRegistry.Register<INetworkService, NetworkService>();
-            containerRegistry.Register<IDatabase, Database>();
-            containerRegistry.Register<ICacheRepository, CacheRepository>();
-            containerRegistry.Register<ILoggerFacade, DebugLogger>();
-
-            containerRegistry.RegisterSingleton<IMemoryCache, MemoryCache>();
-            containerRegistry.RegisterSingleton<IDeviceCache, DeviceCache>();
-            containerRegistry.RegisterSingleton<ICacheService, CacheService>();
-
-            containerRegistry.RegisterDialog<NotesDialog, NotesDialogViewModel>();
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            moduleCatalog.AddModule<ExhibitorModule>();
         }
 
         protected override async void OnStart()
@@ -124,37 +101,7 @@ namespace ExhibitorModule
             }
         }
 
-        private ILoggerFacade CreateLogger()
-        {
-            switch (Xamarin.Forms.Device.RuntimePlatform)
-            {
-                case "Android":
-                    if (!string.IsNullOrWhiteSpace(Helpers.Secrets.AppCenter_Android_Secret))
-                        return CreateAppCenterLogger();
-                    break;
-                case "iOS":
-                    if (!string.IsNullOrWhiteSpace(Helpers.Secrets.AppCenter_iOS_Secret))
-                        return CreateAppCenterLogger();
-                    break;
-            }
-            return new DebugLogger();
-        }
-
-        private MCAnalyticsLogger CreateAppCenterLogger()
-        {
-            var logger = new MCAnalyticsLogger();
-            FFImageLoading.ImageService.Instance.Config.Logger = (IMiniLogger)logger;
-            return logger;
-        }
-
-        private void LogUnobservedTaskExceptions()
-        {
-            TaskScheduler.UnobservedTaskException += (sender, e) =>
-            {
-                Container.Resolve<ILoggerFacade>().Log(e.Exception.Message, Category.Exception, Priority.High);
-            };
-        }
-
+        
         void Handle_OnNotificationOpened(object source, FirebasePushNotificationResponseEventArgs e)
         {
             Console.WriteLine("Push tapped:");
@@ -228,6 +175,104 @@ namespace ExhibitorModule
             return true;
         }
 
+        private void LogUnobservedTaskExceptions()
+        {
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                Container.Resolve<ILoggerFacade>().Log(e.Exception.Message, Category.Exception, Priority.High);
+            };
+        }
+    }
+
+    class Configs : IClientConfig
+    {
+        public Configs()
+        {
+            BaseAddress = "https://xamdevsummitbackend.azurewebsites.net";
+            AuthKey = "pCrzwQ7qdnUTRa12e3Q1bA7iHxWF8VInBwKz9qxdjSyofuxJ4XGYfg==";
+            UserToken = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5MGY3MGQwNS0xNmZlLTRjYTYtOThiNy05MTU2NDZkMDFlOTgiLCJmaXJzdE5hbWUiOiJIdXNzYWluIiwibGFzdE5hbWUiOiJBYmJhc2kiLCJ0aWNrZXRUeXBlIjoiU3BlYWtlciIsInRpY2tldE51bWJlciI6IjMyMDctMSIsImVtYWlsIjoiaG5hYmJhc2lAb3V0bG9vay5jb20iLCJpc3MiOiJYYW1EZXZTdW1taXQiLCJzdWIiOiJYYW1EZXZTdW1taXQiLCJuYmYiOiI2LzIzLzIwMTkgMjozMDo0NiBBTSIsImV4cCI6IjcvMjMvMjAxOSAyOjMwOjQ2IEFNIiwiZWlkIjoiZjZmYzc1ZDEtYWVjOS00YjE2LWE0MmMtMGJiZjMyMDg3YzE3In0.8gca_kU7bgR_cz3T7zDEuf7NqABFckxlFN9BGjd05r8";
+        }
+        public string BaseAddress { get; set; }
+        public string AuthKey { get; set; }
+        public string UserToken { get; set; }
+    }
+
+    public class ExhibitorModule : IModule, IDisposable
+    {
+        public async void OnInitialized(IContainerProvider containerProvider)
+        {
+            SubsribeEvents();
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterPopupNavigationService();
+
+            containerRegistry.RegisterInstance(CreateLogger());
+            containerRegistry.RegisterInstance<IUserDialogs>(UserDialogs.Instance);
+            containerRegistry.RegisterInstance<IDeviceInfo>(CrossDeviceInfo.Current);
+            containerRegistry.RegisterInstance<ICalendars>(CrossCalendars.Current);
+            containerRegistry.RegisterInstance<IPermissions>(CrossPermissions.Current);
+            containerRegistry.RegisterInstance<IFirebasePushNotification>(CrossFirebasePushNotification.Current);
+
+            containerRegistry.RegisterForNavigation<RootNavigationPage, RootNavigationPageViewModel>();
+            containerRegistry.RegisterForNavigation<AboutPage, AboutPageViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
+            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<LookupPage, LookupPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddPersonPage, AddPersonPageViewModel>();
+
+            containerRegistry.Register<IBase, Base>();
+            containerRegistry.Register<IApiService, ApiService>();
+            containerRegistry.RegisterSingleton<ILeadsService, LeadsService>();
+            containerRegistry.Register<IEssentialsService, EssentialsService>();
+            containerRegistry.Register<INetworkService, NetworkService>();
+            containerRegistry.Register<IDatabase, Database>();
+            containerRegistry.Register<ICacheRepository, CacheRepository>();
+            containerRegistry.Register<ILoggerFacade, DebugLogger>();
+
+            containerRegistry.RegisterSingleton<IMemoryCache, MemoryCache>();
+            containerRegistry.RegisterSingleton<IDeviceCache, DeviceCache>();
+            containerRegistry.RegisterSingleton<ICacheService, CacheService>();
+
+            containerRegistry.RegisterDialog<NotesDialog, NotesDialogViewModel>();
+
+            if (!containerRegistry.IsRegistered<IClientConfig>())
+                throw new MissingMemberException("Missing implementation for IClientConfig. Please register an instance of IClientConfig that has configurations for the Http client.");
+        }
+
+        private ILoggerFacade CreateLogger()
+        {
+            switch (Xamarin.Forms.Device.RuntimePlatform)
+            {
+                case "Android":
+                    if (!string.IsNullOrWhiteSpace(Helpers.Secrets.AppCenter_Android_Secret))
+                        return CreateAppCenterLogger();
+                    break;
+                case "iOS":
+                    if (!string.IsNullOrWhiteSpace(Helpers.Secrets.AppCenter_iOS_Secret))
+                        return CreateAppCenterLogger();
+                    break;
+            }
+            return new DebugLogger();
+        }
+
+        private MCAnalyticsLogger CreateAppCenterLogger()
+        {
+            var logger = new MCAnalyticsLogger();
+            FFImageLoading.ImageService.Instance.Config.Logger = (IMiniLogger)logger;
+            return logger;
+        }
+
+
+        void Connectivity_ConnectivityChanged(object sender, Xamarin.Essentials.ConnectivityChangedEventArgs e)
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.None ||
+                Connectivity.NetworkAccess == NetworkAccess.Unknown ||
+                Connectivity.NetworkAccess == NetworkAccess.Local)
+                UserDialogs.Instance.Toast(Strings.Resources.OfflineMessage);
+        }
+
         private void SubsribeEvents()
         {
             Xamarin.Essentials.Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
@@ -236,14 +281,6 @@ namespace ExhibitorModule
         private void UnsubsribeEvents()
         {
             Xamarin.Essentials.Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
-        }
-
-        void Connectivity_ConnectivityChanged(object sender, Xamarin.Essentials.ConnectivityChangedEventArgs e)
-        {
-            if(Connectivity.NetworkAccess == NetworkAccess.None ||
-                Connectivity.NetworkAccess == NetworkAccess.Unknown ||
-                Connectivity.NetworkAccess == NetworkAccess.Local)
-                UserDialogs.Instance.Toast(Strings.Resources.OfflineMessage);
         }
 
         public void Dispose()

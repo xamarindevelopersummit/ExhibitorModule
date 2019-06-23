@@ -1,64 +1,132 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using ExhibitorModule.Common;
 using ExhibitorModule.Models;
 using ExhibitorModule.Services.Abstractions;
+using ExhibitorModule.Services.Helpers;
 
 namespace ExhibitorModule.Services
 {
     public class LeadsService : ILeadsService
     {
-        private readonly List<Attendee> _attendees;
-        private readonly List<Lead> _fullList;
+        private readonly IApiService _apiService;
+        private readonly ICacheService _cacheService;
 
-        public LeadsService()
+        public LeadsService(IApiService apiService, ICacheService cacheService)
         {
-            _attendees = new List<Attendee> {
-                new Attendee { Id = "1", FirstName="Jonathan", LastName="P", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
-                new Attendee { Id = "2", FirstName="James", LastName="M", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
-                new Attendee { Id = "3", FirstName="Maddie", LastName="L", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
-                new Attendee { Id = "4", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
-                new Attendee { Id = "5", FirstName="Hussain", LastName="Abbasi", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
-                new Attendee { Id = "6", FirstName="Shane", LastName="Something", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://img.icons8.com/ios/100/000000/user-filled.png" },
-            };
-
-            _fullList = new List<Lead> {
-                new Lead { Id = "1", FirstName="Dan", LastName="Siegel", AdmissionType=AdmissionType.General, Title="Owner", Company="AvantiPoint LLC", Avatar="https://media.licdn.com/dms/image/C5603AQHJhIia5wa_tw/profile-displayphoto-shrink_800_800/0?e=1566432000&v=beta&t=iBrLuAs8wnhYfVCBQaPIi7W5YZ1kOmoFuDPoxHAER70", ExhibitorId = "1", Notes="Talked about X" },
-                new Lead { Id = "2", FirstName="Hussain", LastName="Abbasi", AdmissionType=AdmissionType.General, Title="Manager", Company="Sogeti", Avatar="https://media.licdn.com/dms/image/C4D03AQGPB4zkv5Ow2Q/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=jUhXeuOGEXTlxefFNFtRyXLNakUreab5jdxvd4iW98Q", ExhibitorId = "1", Notes="Talked about Y" },
-                new Lead { Id = "3", FirstName="Allan", LastName="Ritchie", AdmissionType=AdmissionType.General, Title="Microsoft MVP", Avatar="https://media.licdn.com/dms/image/C4E03AQGwQT1RAN5gRw/profile-displayphoto-shrink_800_800/0?e=1566432000&v=beta&t=835JVTNnuPjfPdELLM80vi0cLTfEfi8sP9HPK7pmFVI", ExhibitorId = "1", Notes="Talked about Z" },
-            };
+            _apiService = apiService;
+            _cacheService = cacheService;
         }
 
         public async Task AddUpdateLead(Lead lead)
         {
-            _fullList.Add(lead);
+            var response = await _apiService.Post<HttpResponseMessage>(ApiKeys.AddLeadApi, lead.ToContent());
+            var result = await response.ReadAsAsync<string>();
+            var x = result;
         }
 
-        public async Task<Lead> GetLeadById(string id)
+        public async Task<List<Attendee>> GetAttendees()
         {
-            return _fullList.FirstOrDefault(_ => _.Id.Equals(id));
+            var response = await _apiService.Get<HttpResponseMessage>(new Uri(ApiKeys.AttendeesApi));
+            var result = await response.ReadAsAsync<List<Attendee>>();
+            _cacheService?.Device?.AddOrUpdateValue(CacheKeys.AttendeesKey, result);
+            return result;
         }
 
-        public async Task<List<Lead>> GetLeads()
+        public async Task<LeadItem> GetLeadById(Guid id)
         {
-            return _fullList.OrderByDescending(_=>_.VisitedAt).ToList();
+            var tcs = new TaskCompletionSource<LeadItem>();
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey);
+                    tcs.SetResult(leads.FirstOrDefault(_ => _.Id == id));
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+            return tcs.Task.Result;
         }
 
-        public async Task<List<Lead>> GetLeads(string query)
+        public async Task<List<LeadItem>> GetLeads()
         {
-            if (string.IsNullOrWhiteSpace(query))
-                return await GetLeads();
+            var response = await _apiService.Get<HttpResponseMessage>(new Uri(ApiKeys.LeadsApi));
+            var leads = await response.ReadAsAsync<List<Lead>>();
+            var result = new List<LeadItem>();
+            foreach (var lead in leads)
+            {
+                var attendee = await GetAttendeeById(lead.AttendeeId);
+                result.Add(new LeadItem {
+                    Id = lead.Id,
+                    ExhibitorId = lead.ExhibitorId,
+                    Notes = lead.Notes,
+                    AttendeeId = lead.AttendeeId,
+                    Attendee = attendee
+                });
+            }
 
-            return _fullList.Where(_=>_.FirstName.ToLower().Contains(query.ToLower()) || _.LastName.ToLower().Contains(query)).ToList();
+            _cacheService?.Device?.AddOrUpdateValue(CacheKeys.LeadsKey, result);
+            return result;
         }
 
-        public async Task<List<Attendee>> LooupAttendees(string query)
+        public async Task<List<LeadItem>> LookupLead(string query)
         {
-            if (string.IsNullOrWhiteSpace(query))
-                return new List<Attendee>();
+            var tcs = new TaskCompletionSource<List<LeadItem>>();
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey);
+                    tcs.SetResult(leads.Where(_ => _.Attendee.FirstName.Contains(query) || _.Attendee.LastName.Contains(query)).ToList());
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+            return tcs.Task.Result;
+        }
 
-            return _attendees.Where(_ => _.FirstName.ToLower().Contains(query.ToLower()) || _.LastName.ToLower().Contains(query)).ToList();
+        public async Task<Attendee> GetAttendeeById(Guid id)
+        {
+            var tcs = new TaskCompletionSource<Attendee>();
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey);
+                    tcs.SetResult(attendees.FirstOrDefault(_=>_.Id == id));
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+            return tcs.Task.Result;
+        }
+
+        public async Task<List<Attendee>> LookupAttendees(string query)
+        {
+            var tcs = new TaskCompletionSource<List<Attendee>>();
+            await Task.Run(()=>
+            {
+                try
+                {
+                    var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey);
+                    tcs.SetResult(attendees.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query)).ToList());
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+            return tcs.Task.Result;
         }
     }
 }

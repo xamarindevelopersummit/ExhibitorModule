@@ -39,13 +39,9 @@ namespace ExhibitorModule.ViewModels
 
                 _leadsService.AddUpdateLead(new Lead
                 {
-                    FirstName = selectedAttendee.FirstName,
-                    LastName = selectedAttendee.LastName,
-                    Company = selectedAttendee.Company,
-                    Avatar = selectedAttendee.Avatar,
-                    AdmissionType = selectedAttendee.AdmissionType,
-                    Title = selectedAttendee.Title,
-                    VisitedAt = DateTime.Now
+                    Id = Guid.NewGuid(),
+                    AttendeeId = value.Id
+                    
                 });
                 NavigationService.GoBackAsync();
             }
@@ -57,7 +53,9 @@ namespace ExhibitorModule.ViewModels
         {
             SearchResults.Clear();
 
-            var results = await _leadsService.LooupAttendees(query);
+            var results = await _leadsService.LookupAttendees(query);
+            if (results == null)
+                return;
             foreach (var attendee in results)
             {
                 SearchResults.Add(attendee);
