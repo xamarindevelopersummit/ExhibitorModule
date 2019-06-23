@@ -184,19 +184,21 @@ namespace ExhibitorModule
         }
     }
 
+    // TODO: temporary
     class Configs : IClientConfig
     {
         public Configs()
         {
-            BaseAddress = "https://xamdevsummitbackend.azurewebsites.net";
-            AuthKey = "pCrzwQ7qdnUTRa12e3Q1bA7iHxWF8VInBwKz9qxdjSyofuxJ4XGYfg==";
-            UserToken = "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI5MGY3MGQwNS0xNmZlLTRjYTYtOThiNy05MTU2NDZkMDFlOTgiLCJmaXJzdE5hbWUiOiJIdXNzYWluIiwibGFzdE5hbWUiOiJBYmJhc2kiLCJ0aWNrZXRUeXBlIjoiU3BlYWtlciIsInRpY2tldE51bWJlciI6IjMyMDctMSIsImVtYWlsIjoiaG5hYmJhc2lAb3V0bG9vay5jb20iLCJpc3MiOiJYYW1EZXZTdW1taXQiLCJzdWIiOiJYYW1EZXZTdW1taXQiLCJuYmYiOiI2LzIzLzIwMTkgMjozMDo0NiBBTSIsImV4cCI6IjcvMjMvMjAxOSAyOjMwOjQ2IEFNIiwiZWlkIjoiZjZmYzc1ZDEtYWVjOS00YjE2LWE0MmMtMGJiZjMyMDg3YzE3In0.8gca_kU7bgR_cz3T7zDEuf7NqABFckxlFN9BGjd05r8";
+            BaseAddress = "";
+            AuthKey = "";
+            UserToken = "";
         }
         public string BaseAddress { get; set; }
         public string AuthKey { get; set; }
         public string UserToken { get; set; }
     }
 
+    // TODO: Extract module from the app
     public class ExhibitorModule : IModule, IDisposable
     {
         public async void OnInitialized(IContainerProvider containerProvider)
