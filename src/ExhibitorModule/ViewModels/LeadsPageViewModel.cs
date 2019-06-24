@@ -76,6 +76,8 @@ namespace ExhibitorModule.ViewModels
 
         private void LoadLeads(List<LeadItem> leads)
         {
+            if (!(leads?.Any() ?? false)) return;
+
             Leads.ReplaceRange(leads);
         }
 

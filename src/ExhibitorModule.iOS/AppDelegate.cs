@@ -20,10 +20,10 @@ namespace ExhibitorModule.iOS
 
             //CrossPayPalManager.Init(GetPayPalConfiguration());
             LoadApplication(new App());
-            
+            var finishedLaunching = base.FinishedLaunching(uiApplication, launchOptions);
             uiApplication.KeyWindow.TintColor = UIColor.FromRGB(0, 154, 67);
             //Console.WriteLine($">>> Push is enabled: {Push.IsEnabledAsync()}");
-            return base.FinishedLaunching(uiApplication, launchOptions); ;
+            return finishedLaunching;
         }
     }
 }

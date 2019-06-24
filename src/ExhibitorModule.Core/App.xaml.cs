@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ExhibitorModule.Core.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Prism;
 using Prism.DryIoc;
 using Prism.Ioc;
@@ -25,12 +26,17 @@ namespace ExhibitorModule
         protected override async void OnInitialized()
         {
             InitializeComponent();
-
+            var result = await NavigationService.NavigateAsync("MainPage/NavigationPage/LeadsPage");
+            if(!result.Success)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<MainPage>();
             containerRegistry.Register<IClientConfig, Configs>();
         }
 

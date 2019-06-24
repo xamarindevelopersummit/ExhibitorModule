@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+  <assembly fullname="Essential.Interfaces">
+    <type fullname="Xamarin.Essentials.Implementation.FileSystemImplementation">
+      <method name=".ctor" />
+    </type>
+  </assembly>
+</linker>

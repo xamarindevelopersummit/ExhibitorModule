@@ -9,7 +9,6 @@ using ExhibitorModule.Services.Abstractions;
 using ExhibitorModule.ViewModels;
 using ExhibitorModule.Views;
 using Prism.Ioc;
-using Prism.Logging;
 using Prism.Modularity;
 using Shiny.Jobs;
 using Xamarin.Essentials.Implementation;
@@ -17,7 +16,6 @@ using Xamarin.Essentials.Interfaces;
 
 namespace ExhibitorModule
 {
-    // TODO: Extract module from the app
     public class ExhibitorModule : IModule
     {
         private IJobManager JobManager { get; }
@@ -37,6 +35,7 @@ namespace ExhibitorModule
                 RequiredInternetAccess = InternetAccess.Any,
                 Type = typeof(ExhibitorSyncJob)
             });
+            await JobManager.Run(nameof(ExhibitorSyncJob));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -53,6 +52,7 @@ namespace ExhibitorModule
             containerRegistry.RegisterForNavigation<AddPersonPage, AddPersonPageViewModel>();
             containerRegistry.RegisterForNavigation<LeadsPage, LeadsPageViewModel>();
 
+            containerRegistry.RegisterSingletonOnce<IFileSystem, FileSystemImplementation>();
             containerRegistry.Register<IBase, Base>();
             containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.RegisterSingleton<ILeadsService, LeadsService>();
