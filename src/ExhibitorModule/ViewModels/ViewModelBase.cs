@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using ExhibitorModule.Helpers;
 using ExhibitorModule.Models;
 using ExhibitorModule.Services.Abstractions;
@@ -20,7 +21,9 @@ namespace ExhibitorModule.ViewModels
 
         protected IDeviceService DeviceService { get; }
 
-        public INavigationService NavigationService { get; }
+        protected INavigationService NavigationService { get; }
+
+        protected IUserDialogs UserDialogs { get; }
 
         public ViewModelBase(IBase @base)
         {
@@ -28,6 +31,7 @@ namespace ExhibitorModule.ViewModels
             DeviceService = @base.DeviceService;
             CacheService = @base.CacheService;
             NavigationService = @base.NavigationService;
+            UserDialogs = @base.UserDialogs;
         }
 
         #region Runners
@@ -72,7 +76,7 @@ namespace ExhibitorModule.ViewModels
                         DeviceService.BeginInvokeOnMainThread(() =>
                         {
                             //NavigationService.NavigateAsync(nameof(ServiceInfoPage), new NavigationParameters { { AppConstants.MaintenanceMessageKey, (exception.InnerException ?? exception).Message } }, true, false);
-                            Acr.UserDialogs.UserDialogs.Instance.Toast(Strings.Resources.OfflineMessage);
+                            UserDialogs.Toast(Strings.Resources.OfflineMessage);
                         });
                     }
                     else if (!handleException)

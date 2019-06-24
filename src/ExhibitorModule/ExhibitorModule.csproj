@@ -1,33 +1,36 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wpa81+wp8</AssetTargetFallback>
     <DebugType>full</DebugType>
+    <Authors>XamDevSummit</Authors>
+    <Description>This is the Exhibitor Module for the Xamarin Developer Summit</Description>
+    <Copyright>Copyright 2019 - Xamarin Developer Summit</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>XamDevSummit Prism Conference</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryUrl>https://github.com/xamarindevelopersummit/ExhibitorModule.git</RepositoryUrl>
+    <PackageIconUrl>https://xamarindevelopersummit.com/wp-content/uploads/2019/04/Isotype.png</PackageIconUrl>
+    <PackageProjectUrl>https://xamarindevelopersummit.com</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="4.1.0" PrivateAssets="all" />
-    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="all" />
-    <PackageReference Include="Prism.Unity.Forms" Version="7.2.0.1347-pre" />
-    <PackageReference Include="Prism.Plugin.Popups" Version="2.4.0.417-pre" />
+    <PackageReference Include="Prism.Forms.Extended" Version="1.0.0.511-pre" />
+    <PackageReference Include="Shiny.Core" Version="1.0.0.238-beta" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.1.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
+    <PackageReference Include="Polly" Version="7.1.0" />
+    <PackageReference Include="IntelliAbb.Xamarin.Controls" Version="1.0.148" />
     <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.6.929" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.6.929" />
-    <PackageReference Include="Mobile.BuildTools" Version="1.4.0.638" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.0.0.13" />
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
-    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="3.6.0.344457" />
-    <PackageReference Include="Plugin.Permissions" Version="4.0.4-beta" />
-    <PackageReference Include="IntelliAbb.Xamarin.Controls" Version="1.0.148" />
-    <PackageReference Include="CClarke.Plugin.Calendars" Version="1.0.0" />
-    <PackageReference Include="Plugin.FirebasePushNotification" Version="2.3.5" />
-    <PackageReference Include="Prism.Forms.Extended" Version="1.0.0.497-pre" />
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" PrivateAssets="all" />
+    <PackageReference Include="Fody" Version="4.1.0" PrivateAssets="all" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,23 +38,27 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Strings\*.resx" Generator="ResXFileCodeGenerator" LastGenOutput="%(Filename).Designer.cs" />
-    <Compile Update="Strings\Resources.Designer.cs" DesignTime="true" AutoGen="true" DependentUpon="Resources.resx" />
+    <Compile Update="Strings\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
     <Compile Update="Views\EventDetail.xaml.cs">
       <DependentUpon>EventDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\ExhibitorModule.Models\ExhibitorModule.Models.csproj" />
-    <ProjectReference Include="..\ExhibitorModule.Services\ExhibitorModule.Services.csproj" />
-    <ProjectReference Include="..\ExhibitorModule.Controls\ExhibitorModule.Controls.csproj" />
-    <ProjectReference Include="..\ExhibitorModule.Common\ExhibitorModule.Common.csproj" />
-    <ProjectReference Include="..\ExhibitorModule.Data\ExhibitorModule.Data.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Settings\" />
-    <Folder Include="ViewModels\Settings\" />
     <Folder Include="Views\Dialogs\" />
     <Folder Include="ViewModels\Dialogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Strings\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LeadsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="FodyWeavers.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
 </Project>

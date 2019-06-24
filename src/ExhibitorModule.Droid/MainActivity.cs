@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Net;
 using Android.OS;
 using Android.Runtime;
-using Plugin.CurrentActivity;
-using Plugin.FirebasePushNotification;
-using Plugin.Permissions;
 using Xamarin.Forms.Platform.Android;
 
 namespace ExhibitorModule.Droid
@@ -29,37 +23,30 @@ namespace ExhibitorModule.Droid
 
             base.OnCreate(savedInstanceState);
 
-            global::Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
             global::Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             global::FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
-            global::FFImageLoading.ImageService.Instance.Initialize(new FFImageLoading.Config.Configuration()
-            {
-                Logger = new Services.DebugLogger()
-            });
+            global::FFImageLoading.ImageService.Instance.Initialize();
             global::Acr.UserDialogs.UserDialogs.Init(this);
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
-            LoadApplication(new App(new AndroidInitializer()));
-            FirebasePushNotificationManager.ProcessIntent(this, Intent);
+
+            LoadApplication(new App());
+        }
+    }
+
+    [Application]
+    public class MainApplication : Application
+    {
+        public MainApplication(IntPtr javaReference, JniHandleOwnership transfer) 
+            : base(javaReference, transfer)
+        {
         }
 
-        protected override void OnNewIntent(Intent intent)
+        public override void OnCreate()
         {
-            base.OnNewIntent(intent);
-            FirebasePushNotificationManager.ProcessIntent(this, intent);
-        }
-
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnCreate();
+            Shiny.AndroidShinyHost.Init(this, new ExhibitorStartup());
         }
     }
 }

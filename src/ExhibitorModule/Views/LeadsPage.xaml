@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:i18n="clr-namespace:ExhibitorModule.i18n;assembly=ExhibitorModule" 
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:windows="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:controls="clr-namespace:ExhibitorModule.Controls"
+             xmlns:strings="clr-namespace:ExhibitorModule.Strings"
+             xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             Title="{Binding Title}" 
+             x:Class="ExhibitorModule.Views.LeadsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" />
+        <ToolbarItem Text="Settings" Command="{prism:NavigateTo SettingsPage}" Icon="settings"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <controls:XDSSearchBar 
+            Text="{Binding SearchText}" 
+            BackgroundColor="{StaticResource Primary}" 
+            Placeholder="{x:Static strings:Resources.SearchLeadsPlaceholder}"
+            CancelButtonColor="White"/>
+        <ListView Grid.Row="1" 
+                  ItemsSource="{Binding Leads}" 
+                  HasUnevenRows="true"
+                  SeparatorVisibility="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <ia:CardView Margin="16,8" Visual="Material" Padding="8">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ff:CachedImage Source="{Binding Attendee.GravatarUri}" 
+                                                    Grid.RowSpan="2" 
+                                                    HorizontalOptions="Start"
+                                                    InputTransparent="true">
+                                        <ff:CachedImage.Transformations>
+                                            <fft:CircleTransformation />
+                                        </ff:CachedImage.Transformations>
+                                    </ff:CachedImage>
+                                    <Label FontSize="Medium" Grid.Column="1"
+                                            InputTransparent="true">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Attendee.FirstName, Mode=OneWay}"/>
+                                                <Span Text=" "/>
+                                                <Span Text="{Binding Attendee.LastName, Mode=OneWay}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <StackLayout Grid.Column="1" Grid.Row="1" 
+                                                 InputTransparent="true">
+                                        <Label Text="{Binding Attendee.Company}" 
+                                               FontSize="Small" 
+                                               TextColor="Gray" 
+                                               VerticalOptions="End"/>
+                                        <Label Text="{Binding LastUPdate, StringFormat='{0:YYYY-MM-d hh\\:mm}'}" 
+                                               FontSize="Micro" 
+                                               TextColor="Gray" 
+                                               VerticalOptions="End"/>
+                                    </StackLayout>
+
+                                    <ImageButton Source="notes" 
+                                                 Command="{Binding BindingContext.ShowNotes, Source={x:Reference this}}" 
+                                                 CommandParameter="{Binding .}"
+                                                 HeightRequest="24"
+                                                 WidthRequest="24"
+                                                 Grid.RowSpan="2"
+                                                 Grid.Column="1"
+                                                 HorizontalOptions="End"
+                                                 Opacity="0.5"/>
+                                </Grid>
+                            </ia:CardView>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>
