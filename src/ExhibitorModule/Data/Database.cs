@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using ExhibitorModule.Data.Abstractions;
+using Shiny.IO;
 using SQLite;
-using Xamarin.Essentials.Interfaces;
 
 namespace ExhibitorModule.Data
 {
@@ -15,7 +15,7 @@ namespace ExhibitorModule.Data
         public Database(IFileSystem fs)
         {
             var fileName = "ExhibitorModuleDatabase.db3";
-            _databaseConnection = new SQLiteConnection(Path.Combine(fs.CacheDirectory, fileName));
+            _databaseConnection = new SQLiteConnection(Path.Combine(fs.Cache.FullName, fileName));
         }
 
         public int CreateTable<T>()

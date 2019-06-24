@@ -26,3 +26,6 @@ using Android.App;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
+[assembly: UsesPermission(Android.Manifest.Permission.ReceiveBootCompleted)]
+[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
+

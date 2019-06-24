@@ -34,7 +34,6 @@
     <PackageReference Include="Prism.Forms.Extended" Version="1.0.0.511-pre" />
     <PackageReference Include="Shiny.Core" Version="1.0.0.238-beta" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
-    <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.1.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
     <PackageReference Include="Polly" Version="7.1.0" />
     <PackageReference Include="IntelliAbb.Xamarin.Controls" Version="1.0.148" />

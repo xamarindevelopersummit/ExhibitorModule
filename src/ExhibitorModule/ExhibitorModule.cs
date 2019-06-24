@@ -11,8 +11,6 @@ using ExhibitorModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Shiny.Jobs;
-using Xamarin.Essentials.Implementation;
-using Xamarin.Essentials.Interfaces;
 
 namespace ExhibitorModule
 {
@@ -52,7 +50,6 @@ namespace ExhibitorModule
             containerRegistry.RegisterForNavigation<AddPersonPage, AddPersonPageViewModel>();
             containerRegistry.RegisterForNavigation<LeadsPage, LeadsPageViewModel>();
 
-            containerRegistry.RegisterSingletonOnce<IFileSystem, FileSystemImplementation>();
             containerRegistry.Register<IBase, Base>();
             containerRegistry.Register<IApiService, ApiService>();
             containerRegistry.RegisterSingleton<ILeadsService, LeadsService>();

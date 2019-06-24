@@ -3,21 +3,18 @@ using ExhibitorModule.Common;
 using ExhibitorModule.Helpers;
 using ExhibitorModule.Views;
 using Prism.Commands;
-using Xamarin.Essentials.Interfaces;
 
 namespace ExhibitorModule.ViewModels
 {
     public class AboutPageViewModel : ViewModelBase
     {
-        private readonly IAppInfo _appInfo;
 
-        public AboutPageViewModel(IBase @base, IAppInfo appInfo)
+        public AboutPageViewModel(IBase @base)
             : base(@base)
         {
             Title = "ABOUT";
 
             InitializeCommand();
-            _appInfo = appInfo;
         }
 
         private void InitializeCommand()
