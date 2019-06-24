@@ -43,7 +43,7 @@ namespace ExhibitorModule.Services
             {
                 try
                 {
-                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey);
+                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey) ?? new List<LeadItem>();
                     tcs.SetResult(leads.FirstOrDefault(_ => _.Id == id));
                 }
                 catch (Exception ex)
@@ -82,8 +82,11 @@ namespace ExhibitorModule.Services
             {
                 try
                 {
-                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey);
-                    tcs.SetResult(leads.Where(_ => _.Attendee.FirstName.Contains(query) || _.Attendee.LastName.Contains(query)).ToList());
+                    if (query == null) query = string.Empty;
+
+                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey) ?? new List<LeadItem>();
+                    var result = leads.Where(_ => _.Attendee.FirstName.Contains(query) || _.Attendee.LastName.Contains(query));
+                    tcs.SetResult(result.ToList());
                 }
                 catch (Exception ex)
                 {
@@ -100,7 +103,7 @@ namespace ExhibitorModule.Services
             {
                 try
                 {
-                    var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey);
+                    var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey) ?? new List<Attendee>();
                     tcs.SetResult(attendees.FirstOrDefault(_=>_.Id == id));
                 }
                 catch (Exception ex)
@@ -118,7 +121,7 @@ namespace ExhibitorModule.Services
             {
                 try
                 {
-                    var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey);
+                    var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey) ?? new List<Attendee>();
                     tcs.SetResult(attendees.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query)).ToList());
                 }
                 catch (Exception ex)

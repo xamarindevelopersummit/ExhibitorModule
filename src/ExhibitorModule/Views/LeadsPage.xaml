@@ -18,7 +18,6 @@
              x:Class="ExhibitorModule.Views.LeadsPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" />
-        <ToolbarItem Text="Settings" Command="{prism:NavigateTo SettingsPage}" Icon="settings"/>
     </ContentPage.ToolbarItems>
 
     <Grid>
