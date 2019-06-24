@@ -1,0 +1,85 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - README.md
+    - .editorconfig
+    - .gitignore
+
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - README.md
+    - .editorconfig
+    - .gitignore
+
+name: $(Build.BuildId)
+
+variables:
+- name: VMImage
+  value: 'windows-2019'
+- name: BuildConfiguration
+  value: Release
+
+stages:
+- stage: build
+  displayName: Build NuGet Packages
+  jobs:
+  - job: buildJob
+    displayName: Build Module
+    pool:
+      vmImage: $(VMImage)
+      demands:
+      - MSBuild
+      - Xamarin.Android
+      - JDK
+      - AndroidSDK
+    steps:
+    - task: NuGetToolInstaller@0
+      displayName: Install Latest NuGet
+      inputs:
+        versionSpec: 4.9.4
+
+    - task: NuGetCommand@2
+      displayName: NuGet Restore
+      inputs:
+        noCache: true
+
+    - task: MSBuild@1
+      displayName: Build Projects
+      inputs:
+        solution: '**/ExhibitorModule.csproj'
+        configuration: $(BuildConfiguration)
+        msbuildArguments: '/p:DebugType=portable /p:JavaSdkDirectory="$(JAVA_HOME)"'
+
+    - task: PublishPipelineArtifact@0
+      displayName: Publish Artifacts
+      inputs:
+        artifactName: NuGet
+        targetPath: $(Build.ArtifactStagingDirectory)
+
+- stage: deploy
+  displayName: Deploy NuGets
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - deployment: NuGet
+    displayName: NuGet.org
+    environment: NuGet
+    condition: and(succeeded(), or(eq(variables['IS_PREVIEW'], true), eq(variables['IS_RELEASE'], true)))
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: NuGetCommand@2
+            displayName: NuGet Push
+            inputs:
+              command: push
+              packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
+              nuGetFeedType: external
+              publishFeedCredentials: 'NuGet'
