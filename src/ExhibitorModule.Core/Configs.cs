@@ -2,7 +2,6 @@
 
 namespace ExhibitorModule
 {
-    // TODO: temporary
     public class Configs : IClientConfig
     {
         public string BaseAddress => Secrets.BaseAddress;

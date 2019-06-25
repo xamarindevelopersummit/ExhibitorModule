@@ -10,9 +10,9 @@
              xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              Title="{Binding Title}">
     
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{prism:NavigateTo '../AddPersonPage'}" Icon="addperson"/>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -20,8 +20,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <controls:XDSSearchBar
-                Text="{Binding SearchText}" 
-                TextChanged="Handle_TextChanged"
+                Text="{Binding SearchText}"
                 BackgroundColor="{StaticResource Primary}" 
                 Placeholder="{x:Static strings:Resources.SearchAttendeesPlaceholder}"
                 CancelButtonColor="White"/>
@@ -42,18 +41,22 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="3*"/>
                                         </Grid.ColumnDefinitions>
                                         <ff:CachedImage Source="{Binding GravatarUri}"
-                                                        Grid.RowSpan="2" 
-                                                        HorizontalOptions="Start">
+                                                        Grid.RowSpan="2"
+                                                        WidthRequest="48"
+                                                        HeightRequest="48"
+                                                        Aspect="AspectFit">
                                             <ff:CachedImage.Transformations>
                                                 <fft:CircleTransformation />
                                             </ff:CachedImage.Transformations>
                                         </ff:CachedImage>
-                                        <Label FontSize="Medium" Grid.Column="1"
-                                            InputTransparent="true">
+                                        <Label FontSize="16" 
+                                               Grid.Column="1"
+                                               InputTransparent="true"
+                                               TextColor="Black">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding FirstName, Mode=OneWay}"/>
@@ -62,12 +65,19 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                        <StackLayout Grid.Column="1" Grid.Row="1">
-                                            <Label Text="{Binding Company}" 
-                                               FontSize="Micro" 
-                                               TextColor="Gray" 
-                                               VerticalOptions="End"/>
-                                        </StackLayout>
+                                    <Label Text="{Binding Company}" 
+                                           Grid.Column="1" 
+                                           Grid.Row="1"
+                                           FontSize="Small" 
+                                           TextColor="Gray" 
+                                           VerticalOptions="End">
+                                        <Label.Triggers>
+                                            <Trigger TargetType="Label"
+                                                     Property="Text" Value="">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </Trigger>
+                                        </Label.Triggers>
+                                    </Label>
                                     </Grid>
                                 </ia:CardView>
                             </Grid>
@@ -82,7 +92,9 @@
                    FontSize="Small"
                    HorizontalTextAlignment="Center"
                    Margin="8"
-                    IsVisible="false"/>
+                    IsVisible="false"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Center"/>
            <!-- <controls:XDSButton x:Name="ManualAddButton"
                                 Text="+ Manually Add Someone" 
                                 Grid.Row="1" 

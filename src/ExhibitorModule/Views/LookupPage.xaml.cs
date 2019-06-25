@@ -1,8 +1,9 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 
 namespace ExhibitorModule.Views
 {
-    public partial class LookupPage : ContentPage
+    public partial class LookupPage : ContentPage, IDisposable
     {
         ViewModels.LookupPageViewModel vm;
 
@@ -15,18 +16,24 @@ namespace ExhibitorModule.Views
         {
             base.OnBindingContextChanged();
             vm = BindingContext as ViewModels.LookupPageViewModel;
+            vm.SearchResults.CollectionChanged += SearchResults_CollectionChanged;
         }
 
-        /// <summary>
-        /// HACK: Workaround while DataTrigger is not working properly
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">E.</param>
-        private void Handle_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        private void SearchResults_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (vm == null) return;
-            //ManualAddButton.IsVisible = vm.SearchResults.Count < 1;
             NoResultsLabel.IsVisible = vm.SearchResults.Count < 1;
+        }
+
+        void IDisposable.Dispose()
+        {
+            try
+            {
+                vm.SearchResults.CollectionChanged -= SearchResults_CollectionChanged;
+            }
+            catch (Exception)
+            {
+                // VM already disposed
+            }
         }
     }
 }

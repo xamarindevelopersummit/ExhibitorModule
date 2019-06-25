@@ -122,7 +122,10 @@ namespace ExhibitorModule.Services
                 try
                 {
                     var attendees = _cacheService.Device.GetObject<List<Attendee>>(CacheKeys.AttendeesKey) ?? new List<Attendee>();
-                    tcs.SetResult(attendees.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query)).ToList());
+                    tcs.SetResult(attendees.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query))
+                        .OrderBy(_ => _.FirstName)
+                        .ThenBy(_ => _.LastName)
+                        .ToList());
                 }
                 catch (Exception ex)
                 {

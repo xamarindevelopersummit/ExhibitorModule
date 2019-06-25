@@ -47,7 +47,7 @@ namespace ExhibitorModule.Droid
         {
             base.OnCreate();
             Shiny.AndroidShinyHost.Init(this, new ExhibitorStartup());
-            Xamarin.Essentials.Platform.Init(this);
+            //Xamarin.Essentials.Platform.Init(this);
         }
     }
 }
