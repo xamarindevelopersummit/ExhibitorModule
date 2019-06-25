@@ -92,9 +92,19 @@
                    FontSize="Small"
                    HorizontalTextAlignment="Center"
                    Margin="8"
-                    IsVisible="false"
+                   IsVisible="false"
                    VerticalOptions="Start"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding 
+                                    Source={x:Reference ResultsList}, 
+                                    Path=ItemsSource.Count}" 
+                                 Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
            <!-- <controls:XDSButton x:Name="ManualAddButton"
                                 Text="+ Manually Add Someone" 
                                 Grid.Row="1" 

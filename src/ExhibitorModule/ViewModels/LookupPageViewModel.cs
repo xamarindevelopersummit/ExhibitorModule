@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ExhibitorModule.Helpers;
 using ExhibitorModule.Models;
 using ExhibitorModule.Services.Abstractions;
+using MvvmHelpers;
 using Prism.Navigation;
 
 namespace ExhibitorModule.ViewModels
@@ -73,26 +74,30 @@ namespace ExhibitorModule.ViewModels
             await NavigationService.GoBackAsync();
         }
 
-        public ObservableCollection<Attendee> SearchResults { get; } = new ObservableCollection<Attendee>();
+        public ObservableRangeCollection<Attendee> SearchResults { get; } = new ObservableRangeCollection<Attendee>();
 
-        async void UpdateSearch(string query)
+        void UpdateSearch(string query)
         {
-            SearchResults.Clear();
-
-#if !DEBUG
+#if DEBUG
             if (string.IsNullOrWhiteSpace(query))
+            {
+                SearchResults.ReplaceRange(_attendeesCache);
+                return;
+            }
+#else
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                SearchResults.Clear();
                 return; // don't volunteer info
+            }
 #endif
             var results = _attendeesCache?.Where(_=>_.FirstName.Contains(query) || _.LastName.Contains(query))?
-                .ToList(); // await _leadsService.LookupAttendees(query);
+                .ToList();
 
             if (results == null)
                 return;
 
-            foreach (var attendee in results)
-            {
-                SearchResults.Add(attendee);
-            }
+            SearchResults.ReplaceRange(results);
         }
     }
 }
