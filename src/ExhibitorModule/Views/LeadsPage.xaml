@@ -15,6 +15,7 @@
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:conv="clr-namespace:ExhibitorModule.Controls.Converters;assembly=ExhibitorModule"
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              Title="{Binding Title}" 
              x:Name="this"
              x:Class="ExhibitorModule.Views.LeadsPage">
@@ -49,7 +50,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="Remove" 
+                            <MenuItem Text="Remove"
+                                      Clicked="Remove_Clicked"
                                       Command="{Binding RemoveLeadCommand}"
                                       CommandParameter="{Binding .}"
                                       IsDestructive="true"/>

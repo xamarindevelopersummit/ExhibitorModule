@@ -32,36 +32,6 @@ namespace ExhibitorModule.ViewModels
             RemoveLeadCommand = new DelegateCommand<LeadContactInfo>(OnRemoveLeadTapped);
         }
 
-        private async void OnRemoveLeadTapped(LeadContactInfo lead)
-        {
-            await RunTask(RemoveLead(lead));
-            LoadLeadsCommand?.Execute();
-        }
-
-        Task RemoveLead(LeadContactInfo lead)
-        {
-            return _leadsService.RemoveLead(lead);
-        }
-
-        private void OnNotesTapped(LeadContactInfo lead)
-        {
-            _dialogService.ShowDialog(Dialogs.Notes, new DialogParameters {
-                    { AppConstants.LeadKey, lead },
-                    { KnownDialogParameters.CloseOnBackgroundTapped, true }
-                }, OnNotesDialogClosed);
-        }
-
-        void OnNotesDialogClosed(IDialogResult result)
-        {
-            if (result.Parameters == null || !result.Parameters.Any())
-                return;
-
-            foreach (var key in result.Parameters.Keys)
-            {
-                Console.WriteLine($"Key:{key}, Value:{result.Parameters.GetValue<object>(key).ToString()}");
-            }
-        }
-
         #region Properties & Commands
         
         private string _searchText;
@@ -88,10 +58,41 @@ namespace ExhibitorModule.ViewModels
 
         #endregion
 
+        #region Command Handlers
+
+        private void OnNotesTapped(LeadContactInfo lead)
+        {
+            _dialogService.ShowDialog(Dialogs.Notes, new DialogParameters {
+                    { AppConstants.LeadKey, lead },
+                    { KnownDialogParameters.CloseOnBackgroundTapped, true }
+                }, OnNotesDialogClosed);
+        }
+
+        void OnNotesDialogClosed(IDialogResult result)
+        {
+            if (result.Parameters == null || !result.Parameters.Any())
+                return;
+
+            foreach (var key in result.Parameters.Keys)
+            {
+                Console.WriteLine($"Key:{key}, Value:{result.Parameters.GetValue<object>(key).ToString()}");
+            }
+        }
+
         private async void OnLoadLeadsCommandsTapped()
         {
             LoadLeads(await RunTask(GetLeads()));
         }
+
+        private async void OnRemoveLeadTapped(LeadContactInfo lead)
+        {
+            await RunTask(RemoveLead(lead));
+            LoadLeadsCommand?.Execute();
+        }
+
+        #endregion
+
+        #region Private Methods
 
         private void LoadLeads(List<LeadContactInfo> leads)
         {
@@ -105,6 +106,11 @@ namespace ExhibitorModule.ViewModels
             return _leadsService.GetLeads();
         }
 
+        Task RemoveLead(LeadContactInfo lead)
+        {
+            return _leadsService.RemoveLead(lead);
+        }
+
         private void Search(string query)
         {
             if(string.IsNullOrWhiteSpace(query))
@@ -113,18 +119,24 @@ namespace ExhibitorModule.ViewModels
             LoadLeads(Leads.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query)).ToList());
         }
 
+        void LoadCache()
+        {
+            LoadLeads(_cacheService.Device?.GetObject<List<LeadContactInfo>>(CacheKeys.LeadsKey));
+        }
+
+        #endregion
+
+        #region Overrides
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             LoadCache();
             LoadLeadsCommand?.Execute();
 
-            if(parameters.GetNavigationMode() != NavigationMode.Back)
+            if (parameters.GetNavigationMode() != NavigationMode.Back)
                 _leadsService.GetAttendees();
         }
 
-        void LoadCache()
-        {
-            LoadLeads(_cacheService.Device?.GetObject<List<LeadContactInfo>>(CacheKeys.LeadsKey));
-        }
+        #endregion
     }
 }
