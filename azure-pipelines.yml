@@ -45,7 +45,7 @@ stages:
        Write-Host "Clearing local cache"
        ./nuget.exe locals all --clear
        Write-Host "Restoring NuGet packages"
-       ./nuget.exe restore src/ExhibitorModule/ExhibitorModule.csproj
+       ./nuget.exe restore src/ExhibitorModule/ExhibitorModule.csproj -NoCache -NonInteractive
       displayName: NuGet Restore
 
     - task: MSBuild@1
