@@ -65,7 +65,7 @@ namespace ExhibitorModule.ViewModels
 
         async Task RequestAddLead(Attendee attendee)
         {
-            await _leadsService.AddUpdateLead(new Lead
+            await _leadsService.AddUpdateLead(new LeadContactInfo
             {
                 Id = Guid.NewGuid(),
                 AttendeeId = attendee.Id,

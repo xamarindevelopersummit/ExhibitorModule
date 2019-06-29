@@ -9,6 +9,7 @@ namespace ExhibitorModule.Common
     {
         public const int DefaultGetRetryCount = 3;
         public const string ContentTypeJson = "application/json";
+        public static string LeadKey = "lead_key";
     }
 
     public class ExhibitorSyncJob : IJob

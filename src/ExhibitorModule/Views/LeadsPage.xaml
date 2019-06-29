@@ -33,7 +33,10 @@
         <ListView Grid.Row="1" 
                   ItemsSource="{Binding Leads}" 
                   HasUnevenRows="true"
-                  SeparatorVisibility="None">
+                  SeparatorVisibility="None"
+                  IsPullToRefreshEnabled="true"
+                  IsRefreshing="{Binding IsBusy}"
+                  RefreshCommand="{Binding LoadLeadsCommand}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -95,5 +98,25 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Label x:Name="NoResultsLabel"
+                   Grid.Row="1" 
+                   Text="Add leads"
+                   TextColor="Gray" 
+                   FontSize="Small"
+                   HorizontalTextAlignment="Center"
+                   Margin="8"
+                   IsVisible="false"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Center">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                                 Binding="{Binding 
+                                    Source={x:Reference Leads}, 
+                                    Path=ItemsSource.Count}" 
+                                 Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
     </Grid>
 </ContentPage>

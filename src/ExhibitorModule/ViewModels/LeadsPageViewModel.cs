@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExhibitorModule.Common;
 using ExhibitorModule.Helpers;
 using ExhibitorModule.Models;
 using ExhibitorModule.Services.Abstractions;
@@ -24,21 +25,22 @@ namespace ExhibitorModule.ViewModels
             _leadsService = leadsService;
             _dialogService = dialogService;
             LoadLeadsCommand = new DelegateCommand(OnLoadLeadsCommandsTapped);
-            ShowNotes = new DelegateCommand<LeadItem>(OnNotesTapped);
+            ShowNotes = new DelegateCommand<LeadContactInfo>(OnNotesTapped);
         }
 
-        private void OnNotesTapped(LeadItem lead)
+        private void OnNotesTapped(LeadContactInfo lead)
         {
             _dialogService.ShowDialog(Dialogs.Notes, new DialogParameters {
-                    { "Lead", lead },
+                    { AppConstants.LeadKey, lead },
                     { KnownDialogParameters.CloseOnBackgroundTapped, true }
-                }, HandleAction);
+                }, OnNotesDialogClosed);
         }
 
-        void HandleAction(IDialogResult result)
+        void OnNotesDialogClosed(IDialogResult result)
         {
             if (!result.Parameters.Any())
                 return;
+
             foreach (var key in result.Parameters.Keys)
             {
                 Console.WriteLine($"Key:{key}, Value:{result.Parameters.GetValue<object>(key).ToString()}");
@@ -56,15 +58,15 @@ namespace ExhibitorModule.ViewModels
             }
         }
 
-        private ObservableRangeCollection<LeadItem> _leads = new ObservableRangeCollection<LeadItem>();
-        public ObservableRangeCollection<LeadItem> Leads
+        private ObservableRangeCollection<LeadContactInfo> _leads = new ObservableRangeCollection<LeadContactInfo>();
+        public ObservableRangeCollection<LeadContactInfo> Leads
         {
             get => _leads;
             set { SetProperty(ref _leads, value); }
         }
 
         public DelegateCommand LoadLeadsCommand { get; set; }
-        public DelegateCommand<LeadItem> ShowNotes { get; set; }
+        public DelegateCommand<LeadContactInfo> ShowNotes { get; set; }
 
         private async void OnLoadLeadsCommandsTapped()
         {
@@ -72,16 +74,16 @@ namespace ExhibitorModule.ViewModels
             LoadLeads(results);
         }
 
-        private void LoadLeads(List<LeadItem> leads)
+        private void LoadLeads(List<LeadContactInfo> leads)
         {
             if (!(leads?.Any() ?? false)) return;
 
             Leads.ReplaceRange(leads);
         }
 
-        private Task<List<LeadItem>> GetLeads(string query = null)
+        private Task<List<LeadContactInfo>> GetLeads(string query = null)
         {
-            if (string.IsNullOrWhiteSpace(query))
+            if (!string.IsNullOrWhiteSpace(query))
                 return _leadsService.LookupLead(query);
 
             return _leadsService.GetLeads();
@@ -96,7 +98,9 @@ namespace ExhibitorModule.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             LoadLeadsCommand?.Execute();
-            _leadsService.GetAttendees();
+
+            if(parameters.GetNavigationMode() != NavigationMode.Back)
+                _leadsService.GetAttendees();
         }
     }
 }

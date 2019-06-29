@@ -14,6 +14,7 @@ namespace ExhibitorModule.Services.Helpers
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _config.UserToken);
             request.Headers.Add("x-functions-key", _config.AuthKey);
             return base.SendAsync(request, cancellationToken);

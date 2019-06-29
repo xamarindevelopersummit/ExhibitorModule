@@ -1,4 +1,5 @@
 ﻿using System;
+using ExhibitorModule.Common;
 using ExhibitorModule.Helpers;
 using ExhibitorModule.Models;
 using ExhibitorModule.Services.Abstractions;
@@ -20,11 +21,11 @@ namespace ExhibitorModule.ViewModels
         private async void OnSaveTapped()
         {
             await _leadsService.AddUpdateLead(CurrentLead);
-            RequestClose?.Invoke(new DialogParameters { { "Lead", CurrentLead } });
+            RequestClose?.Invoke(new DialogParameters { { AppConstants.LeadKey, CurrentLead } });
         }
 
-        private LeadItem _currentLead;
-        public LeadItem CurrentLead { get => _currentLead; private set { SetProperty(ref _currentLead, value); } }
+        private LeadContactInfo _currentLead;
+        public LeadContactInfo CurrentLead { get => _currentLead; private set { SetProperty(ref _currentLead, value); } }
 
         public event Action<IDialogParameters> RequestClose;
 
@@ -40,8 +41,8 @@ namespace ExhibitorModule.ViewModels
                 RequestClose?.Invoke(null);
             }
 
-            CurrentLead = parameters.GetValue<LeadItem>("Lead");
-            Title = $"Notes for {CurrentLead.Attendee.FirstName}";
+            CurrentLead = parameters.GetValue<LeadContactInfo>(AppConstants.LeadKey);
+            Title = $"Notes for {CurrentLead.FirstName}";
         }
 
         public DelegateCommand SaveCommand { get; }

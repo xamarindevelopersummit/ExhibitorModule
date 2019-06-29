@@ -58,6 +58,7 @@
   <ItemGroup>
     <Folder Include="Views\Dialogs\" />
     <Folder Include="ViewModels\Dialogs\" />
+    <Folder Include="Models\DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Strings\Resources.resx">

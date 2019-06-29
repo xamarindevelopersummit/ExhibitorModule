@@ -18,7 +18,8 @@ namespace ExhibitorModule.Services.Helpers
                 .ReadAsStringAsync()
                 .ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<T>(content);
+            var retVal = JsonConvert.DeserializeObject<T>(content);
+            return retVal;
         }
 
         public static HttpContent ToContent(this object obj)

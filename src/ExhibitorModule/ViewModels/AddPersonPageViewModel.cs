@@ -23,7 +23,7 @@ namespace ExhibitorModule.ViewModels
             await NavigationService.GoBackAsync();
         }
 
-        public Lead Current { get; set; } = new Lead { LastUpdate = DateTime.Now };
+        public LeadContactInfo Current { get; set; } = new LeadContactInfo { LastUpdate = DateTime.Now };
 
         public DelegateCommand SaveCommand { get; set; }
     }

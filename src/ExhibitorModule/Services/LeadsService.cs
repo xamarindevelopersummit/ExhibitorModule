@@ -21,11 +21,14 @@ namespace ExhibitorModule.Services
             _cacheService = cacheService;
         }
 
-        public async Task AddUpdateLead(Lead lead)
+        public async Task AddUpdateLead(LeadContactInfo lead)
         {
             var response = await _apiService.Post<HttpResponseMessage>(ApiKeys.AddLeadApi, lead.ToContent());
-            var result = await response.ReadAsAsync<string>();
-            var x = result;
+            //var result = await response.ReadAsAsync<string>();
+            if (response != null)
+            {
+                //await GetLeads();
+            }
         }
 
         public async Task<List<Attendee>> GetAttendees()
@@ -36,14 +39,14 @@ namespace ExhibitorModule.Services
             return result;
         }
 
-        public async Task<LeadItem> GetLeadById(Guid id)
+        public async Task<LeadContactInfo> GetLeadById(Guid id)
         {
-            var tcs = new TaskCompletionSource<LeadItem>();
+            var tcs = new TaskCompletionSource<LeadContactInfo>();
             await Task.Run(() =>
             {
                 try
                 {
-                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey) ?? new List<LeadItem>();
+                    var leads = _cacheService.Device.GetObject<List<LeadContactInfo>>(CacheKeys.LeadsKey) ?? new List<LeadContactInfo>();
                     tcs.SetResult(leads.FirstOrDefault(_ => _.Id == id));
                 }
                 catch (Exception ex)
@@ -54,38 +57,30 @@ namespace ExhibitorModule.Services
             return tcs.Task.Result;
         }
 
-        public async Task<List<LeadItem>> GetLeads()
+        public async Task<List<LeadContactInfo>> GetLeads()
         {
+            var result = new List<LeadContactInfo>();
             var response = await _apiService.Get<HttpResponseMessage>(new Uri(ApiKeys.LeadsApi));
-            var leads = await response.ReadAsAsync<List<Lead>>();
-            var result = new List<LeadItem>();
-            foreach (var lead in leads)
-            {
-                var attendee = await GetAttendeeById(lead.AttendeeId);
-                result.Add(new LeadItem {
-                    Id = lead.Id,
-                    ExhibitorId = lead.ExhibitorId,
-                    Notes = lead.Notes,
-                    AttendeeId = lead.AttendeeId,
-                    Attendee = attendee
-                });
-            }
+            var leads = await response?.ReadAsAsync<List<LeadContactInfo>>();
 
+            if (leads == null)
+                return result;
+            
             _cacheService?.Device?.AddOrUpdateValue(CacheKeys.LeadsKey, result);
             return result;
         }
 
-        public async Task<List<LeadItem>> LookupLead(string query)
+        public async Task<List<LeadContactInfo>> LookupLead(string query)
         {
-            var tcs = new TaskCompletionSource<List<LeadItem>>();
+            var tcs = new TaskCompletionSource<List<LeadContactInfo>>();
             await Task.Run(() =>
             {
                 try
                 {
                     if (query == null) query = string.Empty;
 
-                    var leads = _cacheService.Device.GetObject<List<LeadItem>>(CacheKeys.LeadsKey) ?? new List<LeadItem>();
-                    var result = leads.Where(_ => _.Attendee.FirstName.Contains(query) || _.Attendee.LastName.Contains(query));
+                    var leads = _cacheService.Device.GetObject<List<LeadContactInfo>>(CacheKeys.LeadsKey) ?? new List<LeadContactInfo>();
+                    var result = leads.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query));
                     tcs.SetResult(result.ToList());
                 }
                 catch (Exception ex)
