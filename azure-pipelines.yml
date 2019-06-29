@@ -44,7 +44,7 @@ stages:
     - task: NuGetToolInstaller@0
       displayName: Install Latest NuGet
       inputs:
-        versionSpec: 4.9.4
+        versionSpec: 5.0.2
 
     - task: NuGetCommand@2
       displayName: NuGet Restore
