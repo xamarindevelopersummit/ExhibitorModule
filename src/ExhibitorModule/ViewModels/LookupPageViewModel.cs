@@ -17,6 +17,7 @@ namespace ExhibitorModule.ViewModels
         readonly ICacheService _cacheService;
 
         List<Attendee> _attendeesCache;
+        List<LeadContactInfo> _leads;
 
         public LookupPageViewModel(IBase @base, ILeadsService leadsService,
             ICacheService cacheService) : base(@base)
@@ -53,6 +54,7 @@ namespace ExhibitorModule.ViewModels
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
+            _leads = _cacheService.Device.GetObject<List<LeadContactInfo>>(Common.CacheKeys.LeadsKey) ?? new List<LeadContactInfo>();
             _attendeesCache = _cacheService.Device.GetObject<List<Attendee>>(Common.CacheKeys.AttendeesKey).OrderBy(_ => _.FirstName)
                         .ThenBy(_ => _.LastName)
                         .ToList() ?? new List<Attendee>();
@@ -65,6 +67,7 @@ namespace ExhibitorModule.ViewModels
 
         async Task RequestAddLead(Attendee attendee)
         {
+
             await _leadsService.AddUpdateLead(new LeadContactInfo
             {
                 Id = Guid.NewGuid(),
@@ -91,13 +94,18 @@ namespace ExhibitorModule.ViewModels
                 return; // don't volunteer info
             }
 #endif
-            var results = _attendeesCache?.Where(_=>_.FirstName.Contains(query) || _.LastName.Contains(query))?
+            var results = _attendeesCache?.Where(_=>(_.FirstName.Contains(query) || _.LastName.Contains(query)) && !IsALead(_.Id))?
                 .ToList();
 
             if (results == null)
                 return;
 
             SearchResults.ReplaceRange(results);
+        }
+
+        bool IsALead(Guid id)
+        {
+            return _leads.FirstOrDefault(_ => _.AttendeeId.Equals(id)) != null;
         }
     }
 }
