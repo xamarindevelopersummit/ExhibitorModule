@@ -38,7 +38,7 @@ namespace ExhibitorModule.ViewModels
 
         void OnNotesDialogClosed(IDialogResult result)
         {
-            if (!result.Parameters.Any())
+            if (result.Parameters == null || !result.Parameters.Any())
                 return;
 
             foreach (var key in result.Parameters.Keys)

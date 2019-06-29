@@ -23,12 +23,7 @@ namespace ExhibitorModule.Services
 
         public async Task AddUpdateLead(LeadContactInfo lead)
         {
-            var response = await _apiService.Post<HttpResponseMessage>(ApiKeys.AddLeadApi, lead.ToContent());
-            //var result = await response.ReadAsAsync<string>();
-            if (response != null)
-            {
-                //await GetLeads();
-            }
+            await _apiService.Post<HttpResponseMessage>(ApiKeys.AddLeadApi, lead.ToContent());
         }
 
         public async Task<List<Attendee>> GetAttendees()
@@ -59,15 +54,14 @@ namespace ExhibitorModule.Services
 
         public async Task<List<LeadContactInfo>> GetLeads()
         {
-            var result = new List<LeadContactInfo>();
             var response = await _apiService.Get<HttpResponseMessage>(new Uri(ApiKeys.LeadsApi));
             var leads = await response?.ReadAsAsync<List<LeadContactInfo>>();
 
             if (leads == null)
-                return result;
+                return new List<LeadContactInfo>();
             
-            _cacheService?.Device?.AddOrUpdateValue(CacheKeys.LeadsKey, result);
-            return result;
+            _cacheService?.Device?.AddOrUpdateValue(CacheKeys.LeadsKey, leads.OrderByDescending(_=>_.LastUpdate).ToList());
+            return leads;
         }
 
         public async Task<List<LeadContactInfo>> LookupLead(string query)

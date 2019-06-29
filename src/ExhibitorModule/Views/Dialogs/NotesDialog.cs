@@ -36,7 +36,7 @@ namespace ExhibitorModule.Views
                 MinimumHeightRequest = 150,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            editor.SetBinding(Editor.TextProperty, new Binding("CurrentLead.Notes", BindingMode.TwoWay));
+            editor.SetBinding(Editor.TextProperty, new Binding("Notes", BindingMode.TwoWay));
 
             var saveButton = new XDSButton
             {

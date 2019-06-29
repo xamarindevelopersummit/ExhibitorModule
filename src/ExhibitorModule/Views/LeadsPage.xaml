@@ -14,8 +14,15 @@
              xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:conv="clr-namespace:ExhibitorModule.Controls.Converters;assembly=ExhibitorModule"
              Title="{Binding Title}" 
+             x:Name="this"
              x:Class="ExhibitorModule.Views.LeadsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:GravatarConverter x:Key="GravatarConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" />
     </ContentPage.ToolbarItems>
@@ -30,7 +37,8 @@
             BackgroundColor="{StaticResource Primary}" 
             Placeholder="{x:Static strings:Resources.SearchLeadsPlaceholder}"
             CancelButtonColor="White"/>
-        <ListView Grid.Row="1" 
+        <ListView x:Name="MainListView"
+                  Grid.Row="1" 
                   ItemsSource="{Binding Leads}" 
                   HasUnevenRows="true"
                   SeparatorVisibility="None"
@@ -52,10 +60,14 @@
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <ff:CachedImage Source="{Binding Attendee.GravatarUri}" 
+                                    <ff:CachedImage Source="{Binding GravatarUri, 
+                                                        Converter={x:StaticResource GravatarConverter},
+                                                        ConverterParameter=76}" 
                                                     Grid.RowSpan="2" 
                                                     HorizontalOptions="Start"
-                                                    InputTransparent="true">
+                                                    InputTransparent="true"
+                                                    HeightRequest="76"
+                                                    WidthRequest="76">
                                         <ff:CachedImage.Transformations>
                                             <fft:CircleTransformation />
                                         </ff:CachedImage.Transformations>
@@ -64,19 +76,19 @@
                                             InputTransparent="true">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Attendee.FirstName, Mode=OneWay}"/>
+                                                <Span Text="{Binding FirstName, Mode=OneWay}"/>
                                                 <Span Text=" "/>
-                                                <Span Text="{Binding Attendee.LastName, Mode=OneWay}"/>
+                                                <Span Text="{Binding LastName, Mode=OneWay}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
                                     <StackLayout Grid.Column="1" Grid.Row="1" 
                                                  InputTransparent="true">
-                                        <Label Text="{Binding Attendee.Company}" 
+                                        <Label Text="{Binding Company}" 
                                                FontSize="Small" 
                                                TextColor="Gray" 
                                                VerticalOptions="End"/>
-                                        <Label Text="{Binding LastUPdate, StringFormat='{0:YYYY-MM-d hh\\:mm}'}" 
+                                        <Label Text="{Binding LastUpdate, StringFormat='{0:MMM d h\\:mm tt}'}" 
                                                FontSize="Micro" 
                                                TextColor="Gray" 
                                                VerticalOptions="End"/>
@@ -111,8 +123,8 @@
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding 
-                                    Source={x:Reference Leads}, 
-                                    Path=ItemsSource.Count}" 
+                                 Source={x:Reference MainListView}, 
+                                 Path=ItemsSource.Count}" 
                                  Value="0">
                         <Setter Property="IsVisible" Value="True" />
                     </DataTrigger>
