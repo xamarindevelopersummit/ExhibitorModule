@@ -60,6 +60,7 @@ namespace ExhibitorModule.ViewModels
             {
                 _pageDialogService.DisplayAlertAsync("Error", "Could not load a lead. Please try again.", "OK");
                 RequestClose?.Invoke(null);
+                return;
             }
 
             CurrentLead = parameters.GetValue<LeadContactInfo>(AppConstants.LeadKey);

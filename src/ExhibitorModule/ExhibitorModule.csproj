@@ -15,11 +15,12 @@
     <PackageProjectUrl>https://xamarindevelopersummit.com</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <VersionPrefix>1.0.0</VersionPrefix>
   </PropertyGroup>
 
   <!-- CI Helpers -->
   <PropertyGroup>
-    <PackageOutputPath>$(MSBuildThisFileDirectory)/Artifacts</PackageOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/../../Artifacts</PackageOutputPath>
     <PackageOutputPath Condition=" $(BUILD_ARTIFACTSTAGINGDIRECTORY) != '' ">$(BUILD_ARTIFACTSTAGINGDIRECTORY)</PackageOutputPath>
     <IsPackable>true</IsPackable>
     <IS_PREVIEW Condition=" $(IS_PREVIEW) == '' ">false</IS_PREVIEW>
@@ -32,14 +33,14 @@
 
   <ItemGroup>
     <PackageReference Include="Prism.Forms.Extended" Version="1.0.0.511-pre" />
-    <PackageReference Include="Shiny.Core" Version="1.0.0.238-beta" />
+    <PackageReference Include="Shiny.Core" Version="1.0.0.250-beta" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
     <PackageReference Include="Polly" Version="7.1.0" />
     <PackageReference Include="IntelliAbb.Xamarin.Controls" Version="1.0.148" />
-    <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.6.929" />
-    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.6.929" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" PrivateAssets="all" />
     <PackageReference Include="Fody" Version="4.1.0" PrivateAssets="all" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="all" />
