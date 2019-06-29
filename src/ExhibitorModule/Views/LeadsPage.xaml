@@ -81,8 +81,10 @@
                                             <fft:CircleTransformation />
                                         </ff:CachedImage.Transformations>
                                     </ff:CachedImage>
-                                    <Label FontSize="Medium" Grid.Column="1"
-                                            InputTransparent="true">
+                                    <Label FontSize="Medium" 
+                                           Grid.Column="1"
+                                           VerticalOptions="Center"
+                                           InputTransparent="true">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding FirstName, Mode=OneWay}"/>
@@ -91,7 +93,9 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <StackLayout Grid.Column="1" Grid.Row="1" 
+                                    <StackLayout Grid.Column="1" 
+                                                 Grid.Row="1"
+                                                 VerticalOptions="Start"
                                                  InputTransparent="true">
                                         <Label Text="{Binding Company}" 
                                                FontSize="Small" 
@@ -103,7 +107,7 @@
                                                VerticalOptions="End"/>
                                     </StackLayout>
 
-                                    <ImageButton Source="notes" 
+                                    <!--<ImageButton Source="notes" 
                                                  Command="{Binding BindingContext.ShowNotes, Source={x:Reference this}}" 
                                                  CommandParameter="{Binding .}"
                                                  HeightRequest="24"
@@ -111,7 +115,7 @@
                                                  Grid.RowSpan="2"
                                                  Grid.Column="1"
                                                  HorizontalOptions="End"
-                                                 Opacity="0.5"/>
+                                                 Opacity="0.5"/>-->
                                 </Grid>
                             </ia:CardView>
                         </Grid>
