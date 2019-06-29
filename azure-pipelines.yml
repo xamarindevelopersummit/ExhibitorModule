@@ -39,14 +39,26 @@ stages:
       - JDK
       - AndroidSDK
     steps:
-    - powershell: |
-       Write-Host "Downloading nuget.exe"
-       Invoke-WebRequest -Uri 'https://dist.nuget.org/win-x86-commandline/v5.1.0/nuget.exe' -OutFile 'nuget.exe'
-       Write-Host "Clearing local cache"
-       ./nuget.exe locals all -clear
-       Write-Host "Restoring NuGet packages"
-       ./nuget.exe restore ./src/ExhibitorModule/ExhibitorModule.csproj
-      displayName: NuGet Restore
+    # - powershell: |
+    #    Write-Host "Downloading nuget.exe"
+    #    Invoke-WebRequest -Uri 'https://dist.nuget.org/win-x86-commandline/v5.1.0/nuget.exe' -OutFile 'nuget.exe'
+    #    Write-Host "Clearing local cache"
+    #    ./nuget.exe locals all -clear
+    #    Write-Host "Restoring NuGet packages"
+    #    ./nuget.exe restore ./src/ExhibitorModule/ExhibitorModule.csproj
+    #   displayName: NuGet Restore
+
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: '5.0.2'
+        checkLatest: true
+
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+        feedsToUse: 'select'
+        noCache: true
 
     - task: MSBuild@1
       displayName: Build Projects
