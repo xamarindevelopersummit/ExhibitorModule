@@ -24,9 +24,14 @@ namespace ExhibitorModule.ViewModels
 
         private async void OnSaveTapped()
         {
+            IsBusy = true;
             await _leadsService.AddUpdateLead(CurrentLead);
+            IsBusy = true;
             RequestClose?.Invoke(new DialogParameters { { AppConstants.LeadKey, CurrentLead } });
         }
+
+        private bool _isBusy;
+        public bool IsBusy { get => _isBusy; set { SetProperty(ref _isBusy, value); } }
 
         private LeadContactInfo _currentLead;
         public LeadContactInfo CurrentLead
@@ -38,16 +43,6 @@ namespace ExhibitorModule.ViewModels
             }
         }
 
-        //HACK: Testing with local properties
-        private string _notes;
-        public string Notes
-        {
-            get => _notes;
-            set
-            {
-                SetProperty(ref _notes, value);
-            }
-        }
         public event Action<IDialogParameters> RequestClose;
 
         public bool CanCloseDialog() => true;

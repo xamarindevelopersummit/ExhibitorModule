@@ -45,7 +45,8 @@
                   SeparatorVisibility="None"
                   IsPullToRefreshEnabled="true"
                   IsRefreshing="{Binding IsBusy}"
-                  RefreshCommand="{Binding LoadLeadsCommand}">
+                  RefreshCommand="{Binding LoadLeadsCommand}"
+                  ItemSelected="Handle_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

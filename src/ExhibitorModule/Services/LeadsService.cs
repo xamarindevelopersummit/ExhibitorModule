@@ -60,7 +60,7 @@ namespace ExhibitorModule.Services
             if (leads == null)
                 return new List<LeadContactInfo>();
             
-            _cacheService?.Device?.AddOrUpdateValue(CacheKeys.LeadsKey, leads.OrderByDescending(_=>_.LastUpdate).ToList());
+            _cacheService?.Device?.AddOrUpdateValue(CacheKeys.LeadsKey, leads);
             return leads;
         }
 

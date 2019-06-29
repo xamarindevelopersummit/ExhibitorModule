@@ -62,6 +62,8 @@ namespace ExhibitorModule.ViewModels
 
         private void OnNotesTapped(LeadContactInfo lead)
         {
+            if (lead == null) return;
+
             _dialogService.ShowDialog(Dialogs.Notes, new DialogParameters {
                     { AppConstants.LeadKey, lead },
                     { KnownDialogParameters.CloseOnBackgroundTapped, true }
@@ -86,6 +88,10 @@ namespace ExhibitorModule.ViewModels
 
         private async void OnRemoveLeadTapped(LeadContactInfo lead)
         {
+            if (!await PageDialogService.DisplayAlertAsync(string.Format(Strings.Resources.Remove0, lead.FirstName),
+                Strings.Resources.ConfirmRemovePrompt,
+                Strings.Resources.YES, Strings.Resources.NO))
+                return;
             await RunTask(RemoveLead(lead));
             LoadLeadsCommand?.Execute();
         }

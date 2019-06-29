@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -152,5 +152,17 @@
   </data>
   <data name="SearchAttendeesPlaceholder" xml:space="preserve">
     <value>Enter name...</value>
+  </data>
+  <data name="ConfirmRemovePrompt" xml:space="preserve">
+    <value>Are you sure you want to continue?</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>YES</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="Remove0" xml:space="preserve">
+    <value>Remove {0}</value>
   </data>
 </root>
