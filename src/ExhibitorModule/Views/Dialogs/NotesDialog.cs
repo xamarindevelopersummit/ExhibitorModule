@@ -11,6 +11,9 @@ namespace ExhibitorModule.Views
     public class NotesDialog : ContentView
     {
         private CardView _cardView;
+        private Label _title;
+        private Editor _editor;
+        private XDSButton _saveButton;
 
         public NotesDialog()
         {
@@ -25,37 +28,39 @@ namespace ExhibitorModule.Views
 
         private View BuildView()
         {
-            var title = new Label
+            _title = new Label
             {
                 FontSize = 14
             };
-            title.SetBinding(Label.TextProperty, new Binding("Title"));
+            _title.SetBinding(Label.TextProperty, new Binding("CurrentLead.FirstName", stringFormat:"Notes for {0}"));
 
-            var editor = new Editor
+            _editor = new Editor
             {
                 MinimumHeightRequest = 150,
-                VerticalOptions = LayoutOptions.FillAndExpand
+                VerticalOptions = LayoutOptions.FillAndExpand,
             };
-            editor.SetBinding(Editor.TextProperty, new Binding("Notes", BindingMode.TwoWay));
+            _editor.SetBinding(Editor.TextProperty, new Binding("CurrentLead.Notes", BindingMode.TwoWay));
 
-            var saveButton = new XDSButton
+            _saveButton = new XDSButton
             {
                 Text = "Save"
             };
-            saveButton.SetBinding(Button.CommandProperty, new Binding("SaveCommand"));
+            _saveButton.SetBinding(Button.CommandProperty, new Binding("SaveCommand"));
+
             _cardView = new CardView
             {
                 Visual = VisualMarker.Material,
                 Padding = 16,
                 Content = new StackLayout {
                     Children = { 
-                        title,
-                        editor,
-                        saveButton
+                        _title,
+                        _editor,
+                        _saveButton
                     }
                 },
                 HeightRequest = 200
             };
+
             DialogLayout.SetRelativeWidthRequest(this, 0.75);
             return _cardView;
         }

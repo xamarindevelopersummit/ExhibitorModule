@@ -11,6 +11,7 @@ namespace ExhibitorModule.Services.Abstractions
         Task<LeadContactInfo> GetLeadById(Guid id);
         Task<List<LeadContactInfo>> LookupLead(string query);
         Task AddUpdateLead(LeadContactInfo lead);
+        Task RemoveLead(LeadContactInfo lead);
         Task<List<Attendee>> GetAttendees();
         Task<Attendee> GetAttendeeById(Guid id);
         Task<List<Attendee>> LookupAttendees(string query);

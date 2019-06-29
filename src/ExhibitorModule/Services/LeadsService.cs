@@ -123,5 +123,10 @@ namespace ExhibitorModule.Services
             });
             return tcs.Task.Result;
         }
+
+        public Task RemoveLead(LeadContactInfo lead)
+        {
+            return _apiService.Post<HttpResponseMessage>(ApiKeys.RemoveLeadApi, lead.ToContent());
+        }
     }
 }

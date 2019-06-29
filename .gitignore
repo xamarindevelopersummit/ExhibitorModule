@@ -331,3 +331,4 @@ ASALocalRun/
 .DS_Store
 src/ExhibitorModule/secrets.json
 src/ExhibitorModule.Core/secrets.json
+src/ExhibitorModule.Core/secrets.json

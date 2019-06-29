@@ -28,13 +28,17 @@ namespace ExhibitorModule.ViewModels
             RequestClose?.Invoke(new DialogParameters { { AppConstants.LeadKey, CurrentLead } });
         }
 
-        private string _title;
-        public string Title { get => _title; set { SetProperty(ref _title, value); } }
-
         private LeadContactInfo _currentLead;
+        public LeadContactInfo CurrentLead
+        {
+            get => _currentLead;
+            set
+            {
+                SetProperty(ref _currentLead, value);
+            }
+        }
 
-        public LeadContactInfo CurrentLead { get => _currentLead; private set { SetProperty(ref _currentLead, value); } }
-
+        //HACK: Testing with local properties
         private string _notes;
         public string Notes
         {
@@ -42,7 +46,6 @@ namespace ExhibitorModule.ViewModels
             set
             {
                 SetProperty(ref _notes, value);
-                CurrentLead.Notes = value;
             }
         }
         public event Action<IDialogParameters> RequestClose;
@@ -60,8 +63,6 @@ namespace ExhibitorModule.ViewModels
             }
 
             CurrentLead = parameters.GetValue<LeadContactInfo>(AppConstants.LeadKey);
-            Title = $"Notes for {CurrentLead.FirstName}";
-            Notes = CurrentLead.Notes;
         }
 
         public DelegateCommand SaveCommand { get; }

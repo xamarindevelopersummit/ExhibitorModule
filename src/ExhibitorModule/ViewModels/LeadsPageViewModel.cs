@@ -17,15 +17,30 @@ namespace ExhibitorModule.ViewModels
     {
         private readonly ILeadsService _leadsService;
         private readonly IDialogService _dialogService;
+        private readonly ICacheService _cacheService;
 
-        public LeadsPageViewModel(IBase @base, ILeadsService leadsService, IDialogService dialogService)
+        public LeadsPageViewModel(IBase @base, ILeadsService leadsService,
+            IDialogService dialogService, ICacheService cacheService)
             : base(@base)
         {
             Title = Strings.Resources.LeadsPageTitle;
             _leadsService = leadsService;
             _dialogService = dialogService;
+            _cacheService = cacheService;
             LoadLeadsCommand = new DelegateCommand(OnLoadLeadsCommandsTapped);
             ShowNotes = new DelegateCommand<LeadContactInfo>(OnNotesTapped);
+            RemoveLeadCommand = new DelegateCommand<LeadContactInfo>(OnRemoveLeadTapped);
+        }
+
+        private async void OnRemoveLeadTapped(LeadContactInfo lead)
+        {
+            await RunTask(RemoveLead(lead));
+            LoadLeadsCommand?.Execute();
+        }
+
+        Task RemoveLead(LeadContactInfo lead)
+        {
+            return _leadsService.RemoveLead(lead);
         }
 
         private void OnNotesTapped(LeadContactInfo lead)
@@ -47,6 +62,8 @@ namespace ExhibitorModule.ViewModels
             }
         }
 
+        #region Properties & Commands
+        
         private string _searchText;
         public string SearchText
         {
@@ -66,12 +83,14 @@ namespace ExhibitorModule.ViewModels
         }
 
         public DelegateCommand LoadLeadsCommand { get; set; }
+        public DelegateCommand<LeadContactInfo> RemoveLeadCommand { get; set; }
         public DelegateCommand<LeadContactInfo> ShowNotes { get; set; }
+
+        #endregion
 
         private async void OnLoadLeadsCommandsTapped()
         {
-            var results = await RunTask(GetLeads());
-            LoadLeads(results);
+            LoadLeads(await RunTask(GetLeads()));
         }
 
         private void LoadLeads(List<LeadContactInfo> leads)
@@ -81,26 +100,31 @@ namespace ExhibitorModule.ViewModels
             Leads.ReplaceRange(leads);
         }
 
-        private Task<List<LeadContactInfo>> GetLeads(string query = null)
+        private Task<List<LeadContactInfo>> GetLeads()
         {
-            if (!string.IsNullOrWhiteSpace(query))
-                return _leadsService.LookupLead(query);
-
             return _leadsService.GetLeads();
         }
 
-        private async void Search(string query)
+        private void Search(string query)
         {
-            var results = await RunTask(GetLeads(query));
-            LoadLeads(results);
+            if(string.IsNullOrWhiteSpace(query))
+                LoadCache();
+
+            LoadLeads(Leads.Where(_ => _.FirstName.Contains(query) || _.LastName.Contains(query)).ToList());
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
+            LoadCache();
             LoadLeadsCommand?.Execute();
 
             if(parameters.GetNavigationMode() != NavigationMode.Back)
                 _leadsService.GetAttendees();
+        }
+
+        void LoadCache()
+        {
+            LoadLeads(_cacheService.Device?.GetObject<List<LeadContactInfo>>(CacheKeys.LeadsKey));
         }
     }
 }

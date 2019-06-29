@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" />
+        <ToolbarItem Text="Add" Icon="add" Command="{prism:NavigateTo LookupPage}" />
     </ContentPage.ToolbarItems>
 
     <Grid>
@@ -48,6 +48,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Remove" 
+                                      Command="{Binding RemoveLeadCommand}"
+                                      CommandParameter="{Binding .}"
+                                      IsDestructive="true"/>
+                        </ViewCell.ContextActions>
                         <Grid>
                             <ia:CardView Margin="16,8" Visual="Material" Padding="8">
                                 <Grid>
@@ -111,6 +117,8 @@
             </ListView.ItemTemplate>
         </ListView>
         <Label x:Name="NoResultsLabel"
+                   d:Text="Add leads"
+                   d:IsVisible="true"
                    Grid.Row="1" 
                    Text="Add leads"
                    TextColor="Gray" 
