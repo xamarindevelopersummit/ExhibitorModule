@@ -37,7 +37,7 @@ namespace ExhibitorModule
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage>();
-            containerRegistry.Register<IClientConfig, Configs>();
+            containerRegistry.RegisterMany<Configs>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

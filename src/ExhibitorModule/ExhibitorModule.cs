@@ -41,7 +41,10 @@ namespace ExhibitorModule
             if (!containerRegistry.IsRegistered<IClientConfig>())
                 throw new MissingMemberException("Missing implementation for IClientConfig. Please register an instance of IClientConfig that has configurations for the Http client.");
 
-            if(!containerRegistry.IsRegistered<IUserDialogs>())
+            if (!containerRegistry.IsRegistered<IModuleConfig>())
+                throw new MissingMemberException("Missing implementation for IModuleConfig. Please register an instance of IModuleConfig that has configurations for the module.");
+
+            if (!containerRegistry.IsRegistered<IUserDialogs>())
             {
                 containerRegistry.RegisterInstance<IUserDialogs>(UserDialogs.Instance);
             }

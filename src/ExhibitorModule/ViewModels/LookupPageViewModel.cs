@@ -15,16 +15,18 @@ namespace ExhibitorModule.ViewModels
     {
         readonly ILeadsService _leadsService;
         readonly ICacheService _cacheService;
+        readonly IModuleConfig _moduleConfig;
 
         List<Attendee> _attendeesCache;
         List<LeadContactInfo> _leads;
 
         public LookupPageViewModel(IBase @base, ILeadsService leadsService,
-            ICacheService cacheService) : base(@base)
+            ICacheService cacheService, IModuleConfig moduleConfig) : base(@base)
         {
             Title = Strings.Resources.LookupPageTitle;
             _leadsService = leadsService;
             _cacheService = cacheService;
+            _moduleConfig = moduleConfig;
         }
 
         private string _searchText;
@@ -95,7 +97,7 @@ namespace ExhibitorModule.ViewModels
             }
 #endif
             var results = _attendeesCache?.Where(_=>(_.FirstName.Contains(query) || _.LastName.Contains(query)) && !IsALead(_.Id))?
-                .ToList();
+                .Take(_moduleConfig.SearchResultsLimit)?.ToList();
 
             if (results == null)
                 return;
