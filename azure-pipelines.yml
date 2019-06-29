@@ -50,7 +50,6 @@ stages:
       displayName: NuGet Restore
       inputs:
         noCache: true
-        restoreSolution: '**/ExhibitorModule.csproj'
 
     - task: MSBuild@1
       displayName: Build Projects
