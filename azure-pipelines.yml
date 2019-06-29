@@ -22,8 +22,6 @@ pr:
 name: $(Build.BuildId)
 
 variables:
-- name: VMImage
-  value: 'windows-2019'
 - name: BuildConfiguration
   value: Release
 
@@ -34,19 +32,17 @@ stages:
   - job: buildJob
     displayName: Build Module
     pool:
-      vmImage: $(VMImage)
+      vmImage: windows-2019
       demands:
       - MSBuild
       - Xamarin.Android
       - JDK
       - AndroidSDK
     steps:
-    - task: NuGetToolInstaller@0
-      displayName: Install Latest NuGet
-      inputs:
-        versionSpec: 5.0.2
-
-    - powershell: nuget restore
+    - powershell: |
+       Invoke-WebRequest -Uri 'https://dist.nuget.org/win-x86-commandline/v5.1.0/nuget.exe' -OutFile 'nuget.exe'
+       nuget.exe restore
+      displayName: NuGet Restore
 
     - task: MSBuild@1
       displayName: Build Projects
