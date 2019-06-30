@@ -1,6 +1,7 @@
 ﻿using ExhibitorModule.Controls;
 using ExhibitorModule.Controls.Converters;
 using FFImageLoading.Forms;
+using FFImageLoading.Svg.Forms;
 using FFImageLoading.Transformations;
 using IntelliAbb.Xamarin.Controls;
 using Prism.Services.Dialogs.Xaml;
@@ -40,6 +41,18 @@ namespace ExhibitorModule.Views
 
         private View BuildView()
         {
+            var avatar = new CachedImage
+            {
+                HeightRequest = 100,
+                WidthRequest = 100,
+                Aspect = Aspect.AspectFit
+            };
+            avatar.Transformations.Add(new CircleTransformation());
+            avatar.SetBinding(CachedImage.SourceProperty, new Binding("CurrentLead.GravatarUri",
+                                                                    converter: new GravatarConverter(),
+                                                                    converterParameter: 100));
+
+
             var activityIndicator = new ActivityIndicator
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -47,19 +60,37 @@ namespace ExhibitorModule.Views
             };
             activityIndicator.SetBinding(IsVisibleProperty, new Binding("IsBusy"));
 
+            var firstNameSpan = new Span();
+            firstNameSpan.SetBinding(Span.TextProperty, new Binding("CurrentLead.FirstName", BindingMode.OneWay, stringFormat: "{0} "));
+            var lastNameSpan = new Span();
+            lastNameSpan.SetBinding(Span.TextProperty, new Binding("CurrentLead.LastName", BindingMode.OneWay));
+
+            var name = new Label
+            {
+                FontSize = 24,
+                TextColor = Color.Black,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FormattedText = new FormattedString
+                {
+                    Spans = {
+                            firstNameSpan,
+                            lastNameSpan
+                        }
+                }
+            };
+
             var company = new Label
             {
                 Style = _labelValueStyle,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Margin = new Thickness(8,0)
+                HorizontalTextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 8)
             };
             company.SetBinding(Label.TextProperty, new Binding("CurrentLead.Company"));
 
             var email = new Label
             {
                 Style = _labelValueStyle,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Margin = new Thickness(8, 0)
             };
             email.SetBinding(Label.TextProperty, new Binding("CurrentLead.Email"));
 
@@ -77,34 +108,18 @@ namespace ExhibitorModule.Views
             };
             saveButton.SetBinding(Button.CommandProperty, new Binding("SaveCommand"));
 
-            var avatar = new CachedImage {
-                HeightRequest = 100,
-                WidthRequest = 100,
-                Aspect = Aspect.AspectFit
+            var emailIcon = new SvgCachedImage
+            {
+                Source = new EmbeddedResourceImageSource("ExhibitorModule.Resources.email.svg", typeof(NotesDialog).Assembly),
+                HeightRequest = 20,
+                WidthRequest = 20
             };
-            avatar.Transformations.Add(new CircleTransformation());
-            avatar.SetBinding(CachedImage.SourceProperty, new Binding("CurrentLead.GravatarUri",
-                                                                    converter: new GravatarConverter(),
-                                                                    converterParameter:100));
 
-            var firstNameSpan = new Span();
-            firstNameSpan.SetBinding(Span.TextProperty, new Binding("CurrentLead.FirstName", BindingMode.OneWay, stringFormat:"{0} "));
-            var lastNameSpan = new Span();
-            lastNameSpan.SetBinding(Span.TextProperty, new Binding("CurrentLead.LastName", BindingMode.OneWay));
-            
-            var name = new Label {
-                FontSize = 24,
-                TextColor = Color.Black,
-                FontAttributes = FontAttributes.Bold,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.End,
-                Margin = new Thickness(8,0),
-                FormattedText = new FormattedString {
-                        Spans = {
-                            firstNameSpan,
-                            lastNameSpan
-                        }
-                }
+            var notesIcon = new SvgCachedImage
+            {
+                Source = new EmbeddedResourceImageSource("ExhibitorModule.Resources.notes.svg", typeof(NotesDialog).Assembly),
+                HeightRequest = 20,
+                WidthRequest = 20
             };
 
             var mainGrid = new Grid();
@@ -114,22 +129,31 @@ namespace ExhibitorModule.Views
             mainGrid.Children.Add(avatar);
             mainGrid.Children.Add(
                 new StackLayout {
-                        Spacing = 0,
                         Children = {
                             name,
                             company,
-                            email,
+                            new StackLayout
+                            {
+                                Margin=new Thickness(0, 8),
+                                Orientation = StackOrientation.Horizontal,
+                                Children =
+                                {
+                                    emailIcon,
+                                    email
+                                }
+                            },
                             new StackLayout
                             {
                                 HeightRequest = 32.0,
                                 Orientation = StackOrientation.Horizontal,
                                 Children =
                                 {
+                                    notesIcon,
                                     new Label
                                     {
                                         Text = "Notes",
                                         Style = _labelStyle,
-                                        VerticalOptions = LayoutOptions.End
+                                        VerticalOptions = LayoutOptions.Center
                                     },
                                     activityIndicator
                                 }

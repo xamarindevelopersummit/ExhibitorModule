@@ -13,6 +13,7 @@
              xmlns:strings="clr-namespace:ExhibitorModule.Strings"
              xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ffv="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:conv="clr-namespace:ExhibitorModule.Controls.Converters;assembly=ExhibitorModule"
              xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
@@ -24,9 +25,9 @@
             <conv:GravatarConverter x:Key="GravatarConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Icon="add" Command="{prism:NavigateTo LookupPage}" />
-    </ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{prism:NavigateTo LookupPage}" />
+    </ContentPage.ToolbarItems>-->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -135,15 +136,30 @@
                    IsVisible="false"
                    VerticalOptions="Start"
                    HorizontalOptions="Center">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding 
-                                 Source={x:Reference MainListView}, 
-                                 Path=ItemsSource.Count}" 
-                                 Value="0">
-                        <Setter Property="IsVisible" Value="True" />
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding 
+                             Source={x:Reference MainListView}, 
+                             Path=ItemsSource.Count}" 
+                             Value="0">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+        <ffv:SvgCachedImage x:Name="AddFButton"
+                            BackgroundColor="White"
+                            HeightRequest="64"
+                            WidthRequest="64"
+                            Grid.Row="1"
+                            HorizontalOptions="End"
+                            VerticalOptions="End"
+                            Margin="16">
+                            <ff:CachedImage.Transformations>
+                                <fft:TintTransformation HexColor="#ff454CE1" EnableSolidColor="true"/>
+                            </ff:CachedImage.Transformations>
+                            <ffv:SvgCachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Command="{prism:NavigateTo LookupPage}"/>
+                            </ffv:SvgCachedImage.GestureRecognizers>
+        </ffv:SvgCachedImage>
     </Grid>
 </ContentPage>

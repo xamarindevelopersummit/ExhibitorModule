@@ -8,6 +8,7 @@
              xmlns:ia="clr-namespace:IntelliAbb.Xamarin.Controls;assembly=IntelliAbb.Xamarin.Controls"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fft="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:conv="clr-namespace:ExhibitorModule.Controls.Converters;assembly=ExhibitorModule"
              Title="{Binding Title}">
     <ContentPage.Resources>
@@ -86,12 +87,15 @@
                                             </Trigger>
                                         </Label.Triggers>
                                     </Label>
-                                        <Image Grid.RowSpan="2"
-                                               Grid.Column="1"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="End"
-                                               Margin="12"
-                                               Source="add"/>
+                                    <ffsvg:SvgCachedImage 
+                                            Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            Source="resource://ExhibitorModule.Resources.add.svg"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="End"
+                                            Margin="12"
+                                            WidthRequest="24"
+                                            HeightRequest="24" />
                                     </Grid>
                                 </ia:CardView>
                             </Grid>

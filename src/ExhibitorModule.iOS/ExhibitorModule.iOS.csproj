@@ -287,18 +287,6 @@
     <ImageAsset Include="Assets.xcassets\notes.imageset\outline_speaker_notes_black_24pt_3x.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\add.imageset\baseline_add_black_24pt_1x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\add.imageset\baseline_add_black_24pt_2x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\add.imageset\baseline_add_black_24pt_3x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\add.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using FFImageLoading.Forms;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace ExhibitorModule.Views
@@ -9,6 +11,7 @@ namespace ExhibitorModule.Views
         public LeadsPage()
         {
             InitializeComponent();
+            AddFButton.Source = new EmbeddedResourceImageSource("ExhibitorModule.Resources.add_circle.svg", typeof(LeadsPage).Assembly);
         }
 
         void Remove_Clicked(object sender, System.EventArgs e)
