@@ -13,7 +13,6 @@
     <RepositoryUrl>https://github.com/xamarindevelopersummit/ExhibitorModule.git</RepositoryUrl>
     <PackageIconUrl>https://xamarindevelopersummit.com/wp-content/uploads/2019/04/Isotype.png</PackageIconUrl>
     <PackageProjectUrl>https://xamarindevelopersummit.com</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <VersionPrefix>1.0.0</VersionPrefix>
   </PropertyGroup>
@@ -29,6 +28,8 @@
     <VersionSuffix>ci</VersionSuffix>
     <VersionSuffix Condition=" $(IS_PREVIEW) ">pre</VersionSuffix>
     <VersionSuffix Condition=" $(IS_RELEASE) "></VersionSuffix>
+    <PackageId>XamDevSummit.ExhibitorModule</PackageId>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,32 +48,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModels\SplashScreenPageViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="Strings\*.resx" Generator="ResXFileCodeGenerator" LastGenOutput="%(Filename).Designer.cs" />
     <Compile Update="Strings\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-    <Compile Update="Views\EventDetail.xaml.cs">
-      <DependentUpon>EventDetailPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dialogs\" />
-    <Folder Include="ViewModels\Dialogs\" />
-    <Folder Include="Models\DTOs\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Strings\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\LeadsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Update="FodyWeavers.xsd">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 </Project>
