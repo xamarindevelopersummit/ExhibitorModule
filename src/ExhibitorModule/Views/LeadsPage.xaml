@@ -146,20 +146,21 @@
                 </DataTrigger>
             </Label.Triggers>
         </Label>
-        <ffv:SvgCachedImage x:Name="AddFButton"
-                            BackgroundColor="White"
-                            HeightRequest="64"
-                            WidthRequest="64"
-                            Grid.Row="1"
-                            HorizontalOptions="End"
-                            VerticalOptions="End"
-                            Margin="16">
+        <Grid Grid.Row="1" 
+              Margin="16"
+              HeightRequest="64"
+              WidthRequest="64"
+              HorizontalOptions="End"
+              VerticalOptions="End">
+            <BoxView BackgroundColor="White" Margin="18"/>
+            <ffv:SvgCachedImage x:Name="AddFButton">
                             <ff:CachedImage.Transformations>
                                 <fft:TintTransformation HexColor="#ff454CE1" EnableSolidColor="true"/>
                             </ff:CachedImage.Transformations>
                             <ffv:SvgCachedImage.GestureRecognizers>
                                 <TapGestureRecognizer Command="{prism:NavigateTo LookupPage}"/>
                             </ffv:SvgCachedImage.GestureRecognizers>
-        </ffv:SvgCachedImage>
+            </ffv:SvgCachedImage>
+        </Grid>
     </Grid>
 </ContentPage>

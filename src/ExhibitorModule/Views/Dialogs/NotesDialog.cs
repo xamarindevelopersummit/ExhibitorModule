@@ -1,4 +1,5 @@
-﻿using ExhibitorModule.Controls;
+﻿using System;
+using ExhibitorModule.Controls;
 using ExhibitorModule.Controls.Converters;
 using FFImageLoading.Forms;
 using FFImageLoading.Svg.Forms;
@@ -11,46 +12,23 @@ namespace ExhibitorModule.Views
 {
     public class NotesDialog : ContentView
     {
-        private CardView _cardView;
-        private readonly Style _labelStyle;
-        private readonly Style _labelValueStyle;
-
         public NotesDialog()
         {
             Content = BuildView();
-            _labelStyle = GetLabelStyle();
-
-            _cardView.TranslationY = 100;
-
-            var x = (Width / 2) - _cardView.Width / 2;
-            var y = (Height / 2 ) - _cardView.Height / 2;
-            _cardView.TranslateTo(x, y, easing: Easing.SpringOut);
-        }
-
-        Style GetLabelStyle()
-        {
-            return new Style(typeof(Label))
-            {
-                Setters =
-                {
-                    new Setter { Property = Label.TextColorProperty, Value = Color.Silver },
-                    new Setter { Property = Label.FontSizeProperty, Value = 9 }
-                }
-            };
         }
 
         private View BuildView()
         {
             var avatar = new CachedImage
             {
-                HeightRequest = 100,
-                WidthRequest = 100,
+                HeightRequest = 64,
+                WidthRequest = 64,
                 Aspect = Aspect.AspectFit
             };
             avatar.Transformations.Add(new CircleTransformation());
             avatar.SetBinding(CachedImage.SourceProperty, new Binding("CurrentLead.GravatarUri",
                                                                     converter: new GravatarConverter(),
-                                                                    converterParameter: 100));
+                                                                    converterParameter: 64));
 
 
             var activityIndicator = new ActivityIndicator
@@ -67,10 +45,11 @@ namespace ExhibitorModule.Views
 
             var name = new Label
             {
-                FontSize = 24,
+                FontSize = 18,
                 TextColor = Color.Black,
                 FontAttributes = FontAttributes.Bold,
-                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.End,
+                VerticalOptions = LayoutOptions.FillAndExpand,
                 FormattedText = new FormattedString
                 {
                     Spans = {
@@ -82,23 +61,32 @@ namespace ExhibitorModule.Views
 
             var company = new Label
             {
-                Style = _labelValueStyle,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 8)
+                FontSize = 14,
+                TextColor = Color.Gray,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalTextAlignment = TextAlignment.Start
             };
             company.SetBinding(Label.TextProperty, new Binding("CurrentLead.Company"));
 
             var email = new Label
             {
-                Style = _labelValueStyle,
+                FontSize = 14,
+                TextColor = Color.Gray
             };
             email.SetBinding(Label.TextProperty, new Binding("CurrentLead.Email"));
+            
+            var notesLabel = new Label
+            {
+                FontSize = 14,
+                TextColor = Color.Gray,
+                Text = "Notes",
+                VerticalTextAlignment = TextAlignment.Center
+            };
 
             var editor = new Editor
             {
-                HeightRequest = 200,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                Keyboard = Keyboard.Text
+                Keyboard = Keyboard.Text,
+                HeightRequest = 100
             };
             editor.SetBinding(Editor.TextProperty, new Binding("CurrentLead.Notes", BindingMode.TwoWay));
 
@@ -111,30 +99,38 @@ namespace ExhibitorModule.Views
             var emailIcon = new SvgCachedImage
             {
                 Source = new EmbeddedResourceImageSource("ExhibitorModule.Resources.email.svg", typeof(NotesDialog).Assembly),
-                HeightRequest = 20,
-                WidthRequest = 20
+                HeightRequest = 14,
+                WidthRequest = 14,
             };
 
             var notesIcon = new SvgCachedImage
             {
                 Source = new EmbeddedResourceImageSource("ExhibitorModule.Resources.notes.svg", typeof(NotesDialog).Assembly),
-                HeightRequest = 20,
-                WidthRequest = 20
+                HeightRequest = 14,
+                WidthRequest = 14
             };
 
-            var mainGrid = new Grid();
-            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            
-            mainGrid.Children.Add(avatar);
-            mainGrid.Children.Add(
-                new StackLayout {
-                        Children = {
-                            name,
-                            company,
+            var avatarStack = new StackLayout
+            {
+                Orientation = StackOrientation.Horizontal,
+                Children =
+                    {
+                        avatar,
+                        new StackLayout
+                        {
+                            Children = {
+                                name,
+                                company
+                            }
+                        }
+                    }
+            };
+
+            var emailStack = new StackLayout
+            {
+                Children = {
                             new StackLayout
                             {
-                                Margin=new Thickness(0, 8),
                                 Orientation = StackOrientation.Horizontal,
                                 Children =
                                 {
@@ -144,35 +140,38 @@ namespace ExhibitorModule.Views
                             },
                             new StackLayout
                             {
-                                HeightRequest = 32.0,
                                 Orientation = StackOrientation.Horizontal,
                                 Children =
                                 {
                                     notesIcon,
-                                    new Label
-                                    {
-                                        Text = "Notes",
-                                        Style = _labelStyle,
-                                        VerticalOptions = LayoutOptions.Center
-                                    },
+                                    notesLabel,
                                     activityIndicator
                                 }
-                            },
-                            editor,
-                            saveButton
+                            }
                         }
-                }, 0, 1
-            );
-            _cardView = new CardView
-            {
-                Visual = VisualMarker.Material,
-                Padding = 16,
-                Content = new ScrollView { Content = mainGrid },
-                MinimumHeightRequest = 300
             };
 
+            var mainGrid = new Grid();
+            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            mainGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+
+            mainGrid.Children.Add(avatarStack);
+            mainGrid.Children.Add(emailStack, 0, 1);
+            mainGrid.Children.Add(editor, 0, 2);
+            mainGrid.Children.Add(saveButton, 0, 3);
+
             DialogLayout.SetRelativeWidthRequest(this, 0.75);
-            return _cardView;
+
+            return new ScrollView { Content = new CardView
+                                        {
+                                            Visual = VisualMarker.Material,
+                                            Padding = 16,
+                                            Content = mainGrid
+                                        }
+            };
         }
+
     }
 }
